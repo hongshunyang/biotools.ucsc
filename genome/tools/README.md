@@ -50,10 +50,10 @@
 ```
 
 > 可选参数intersectClusterName:["repfamily","repclass","repclassrepfamily"]
-> repfamily:统计每一个repfamily上有多少个不同的clustername
-> repclass:统计每一个repclass上有多少个不同的clustername 
-> repclassrepfamily:统计所有clustername中有多少个
-> clustername会与repclass或者repfamily产生交集，后者8列中至少存在一列与clustername相交
+> * repfamily:统计每一个repfamily上有多少个不同的clustername
+> * repclass:统计每一个repclass上有多少个不同的clustername 
+> * repclassrepfamily:统计所有clustername中有多少个
+> * clustername会与repclass或者repfamily产生交集，后者8列中至少存在一列与clustername相交
  
 ```shell
 ./app.py -s settings.ini -g GRCm38 -r ../result/09242016 --intersectClusterName=repclassrepfamily
