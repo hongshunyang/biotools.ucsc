@@ -1,3 +1,13 @@
+## Python Version
+
+* 3.x
+
+## Python Dependencies
+
+* mysql-connector-python (2.0.4)
+* openpyxl (2.4.0)
+* sortedcontainers (1.5.4)
+
 # How to use
 
 ## Options
