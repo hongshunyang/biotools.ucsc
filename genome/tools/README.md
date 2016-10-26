@@ -29,7 +29,9 @@
 
 ### mark repclass,repfamily(sine,line,ltr,dna)
 
-> 对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录),检索远端数据库并标记位点的repClass,repFamily,生成结果文件csv位于result目录
+> 对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录),
+> 检索远端数据库并标记位点的repClass,repFamily,
+> 生成结果文件csv位于result目录
 ```shell
 ./app.py -s settings.ini -g GRCm38 -d ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx
 ./app.py -s settings.ini -g GRCm38 -d ../data/09102016/
@@ -37,8 +39,8 @@
 
 ### statistic repfamily count
 
-> 对已经插入repClass,repFamily(共8列，sine,line,ltr,dna(*2))的结果
-> 文件(位于result目录,文件类型.csv)进行统计，每个结果文件包含多少class，
+> 对已经插入repClass,repFamily(共8列，sine,line,ltr,dna(*2))的结果文件(位于result目录,文件类型.csv)进行统计，
+> 每个结果文件包含多少class，
 > 多少family生成结果一个文件(.csv)位于tools(GRCm38_RepeatMasker_stats_result.csv)_result目录,
 > 默认统计每一个文件中每一个repfamily有出现多少次
 
