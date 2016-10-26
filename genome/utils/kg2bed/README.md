@@ -1,5 +1,5 @@
 ### Documention
-<KnownGenesToBed>(https://github.com/lindenb/jvarkit/wiki/KnownGenesToBed)
+[KnownGenesToBed](https://github.com/lindenb/jvarkit/wiki/KnownGenesToBed)
 
 ### How to use
 
