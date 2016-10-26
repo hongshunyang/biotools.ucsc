@@ -30,15 +30,27 @@
 ./app.py -s settings.ini -g GRCm38 -d ../data/09102016/
 ```
 
+### statistic repfamily count
+
+> 对已经插入repClass,repFamily(共8列，sine,line,ltr,dna(*2))的结果
+> 文件(位于result目录,文件类型.csv)进行统计，每个结果文件包含多少class，
+> 多少family生成结果一个文件(.csv)位于tools(GRCm38_RepeatMasker_stats_result.csv)_result目录
+> 默认统计每一个文件中每一个repfamily有出现多少次
 
 ```shell
--------------------- statistic repfamily count --------------------
-对已经插入repClass,repFamily(共8列，sine,line,ltr,dna(*2))的结果文件(位于result目录,文件类型.csv)进行统计，每个结果文件包含多少class，多少family生成结果一个文件(.csv)位于tools(GRCm38_RepeatMasker_stats_result.csv)_result目录
-默认统计每一个文件中每一个repfamily有出现多少次
 ./app.py -s settings.ini -g GRCm38 -r ../result/09102016/Medium/WT-4/result_WT-4\ C\ to\ A\ 5648.csv
 ./app.py -s settings.ini -g GRCm38 -r ../result/09102016/
-可选参数intersectClusterName:["repfamily","repclass","repclassrepfamily"]
+```
+
+> 可选参数intersectClusterName:["repfamily","repclass","repclassrepfamily"]
+
+```shell
 ./app.py -s settings.ini -g GRCm38 -r ../result/09242016 --intersectClusterName=repclassrepfamily
+```
+
+
+
+```shell
 -------------------- cluster file --------------------
 对原始文件(必须包含chromosome,region，文件类型：xlsx,csv,位于data目录)根据提供的参数，按照就近划分原则(region值从小到大)进行分割，并插入第一列Clustername与结果文件(csv格式)中
 ./app.py -c ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx -e 3 -t 2500 -o 5 -f 5
