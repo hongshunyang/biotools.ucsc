@@ -1,0 +1,3 @@
+## Result file type
+
+* .csv
