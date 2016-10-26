@@ -29,9 +29,7 @@
 
 ### mark repclass,repfamily(sine,line,ltr,dna)
 
-> 对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录),
-> 检索远端数据库并标记位点的repClass,repFamily,
-> 生成结果文件csv位于result目录
+> 对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录),检索远端数据库并标记位点的repClass,repFamily,生成结果文件csv位于result目录
 ```shell
 ./app.py -s settings.ini -g GRCm38 -d ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx
 ./app.py -s settings.ini -g GRCm38 -d ../data/09102016/
