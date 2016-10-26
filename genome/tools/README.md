@@ -18,8 +18,10 @@
 * -b,--bed:source definition file(bed file) including cds,5utr,3utr,intron position in _result directory
 * -x,--exon:need to be dealed file in data directory
 
+## Examples
 
 ### mark repclass,repfamily(sine,line,ltr,dna)
+
 > 对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录)
 > 检索远端数据库并标记位点的repClass,repFamily(生成结果文件csv位于
 > result目录)
