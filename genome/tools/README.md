@@ -27,7 +27,7 @@
 
 ## Examples
 
-### mark repclass,repfamily(sine,line,ltr,dna)
+###1.mark repclass,repfamily(sine,line,ltr,dna)
 
 > 对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录),
 > 检索远端数据库并标记位点的repClass,repFamily,
@@ -37,7 +37,7 @@
 ./app.py -s settings.ini -g GRCm38 -d ../data/09102016/
 ```
 
-### statistic repfamily count
+###2.statistic repfamily count
 
 > 对已经插入repClass,repFamily(共8列，sine,line,ltr,dna(*2))的结果文件(位于result目录,文件类型.csv)进行统计，
 > 每个结果文件包含多少class，
@@ -59,7 +59,7 @@
 ./app.py -s settings.ini -g GRCm38 -r ../result/09242016 --intersectClusterName=repclassrepfamily
 ```
 
-### cluster file
+###3.cluster file
 
 > 对原始文件(必须包含chromosome,region，文件类型：xlsx,csv,位于data目录),
 > 根据提供的参数，按照就近划分原则(region值从小到大)进行分割，
@@ -71,7 +71,7 @@
 ./app.py -c ../data/09102016/ -e 3 -t 2500 -o 5 -f 5
 ```
 
-### mark CDS,5UTR,3UTR,INTRON
+###4.mark CDS,5UTR,3UTR,INTRON
 
 > bed 文件有utils/kg2bed工具生成,置于tools/_data目录
 
