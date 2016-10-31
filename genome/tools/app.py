@@ -139,9 +139,9 @@ def saveDataToCSV(title,data,filePath,fmt=''):
 	file_handle = open(filePath,'w')
 	
 	if fmt=='':
-		csv_writer = csv.writer(file_handle)##delimiter=' ',
+		csv_writer = csv.writer(file_handle,delimiter='')##delimiter=' ',
 	else:
-		csv_writer = csv.writer(file_handle,fmt)##delimiter=' ',
+		csv_writer = csv.writer(file_handle,delimiter=fmt)##delimiter=' ',
 	
 	if len(title) >0 :
 		csv_writer.writerow(title)
