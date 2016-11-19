@@ -106,11 +106,12 @@ def _genObjDataFromFile(dataFilePath,idioConfigs):
     print("acting input   data file")
     if os.path.isdir(dataFilePath):
         print("  data file is a directory:%s" % dataFilePath)
+
         for root,dirs,files in os.walk(os.path.abspath(dataFilePath)):
-            for file in files:
-                filename,fileext=os.path.splitext(file)
+            for fl in files:
+                filename,fileext=os.path.splitext(fl)
                 if fileext=='.csv':
-                    datafileabspath = root+os.sep+file
+                    datafileabspath = root+os.sep+fl
                     roiDataSet = _getROIDataFromSingleFile(datafileabspath,idioConfigs)
                     genIdiographicaData(roiDataSet,datafileabspath)
     elif os.path.isfile(dataFilePath):
@@ -249,12 +250,6 @@ def genIdiographicaData(roiDataSet,datafileabspath):
         row.append(int(roiDataSet[j][region_column])+1)
         row.append('.')
         objDataSet.append(row)
-
-    
-
-
-
-
     saveDataToCSV([],objDataSet,resultFilePath,'\t')
 
 def main():
@@ -298,7 +293,9 @@ def main():
 
 
     if input_data != '':
-            genObjDataFromFile(input_data,idioConfigs)
+        genObjDataFromFile(input_data,idioConfigs)
+        #重命名文件
+        #添加title
     else:
         sys.exit()
 
