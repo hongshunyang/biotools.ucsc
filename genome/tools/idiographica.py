@@ -2,6 +2,9 @@
 # -*- coding:utf-8 -*-
 # Copyright (C) yanghongshun@gmail.com
 #
+##./app.py -c ../data/11182016-1/ -o 20 -f 1 -e 3 -t 2500
+##cp -r ../result/11182016-1 11182016-1-idio
+##./idiographica.py -i ../data/11182016-1-idio/ -c 0,9,10 -b 0 -r 9 -n 0
 
 import os,sys,configparser,getopt
 import csv,shutil
@@ -150,26 +153,33 @@ def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
         print(res_cols)
         colDataSet=[]      
         repeatColumnData=[]
-        for cl in inputFileDataSetOrig[1:]:
+
+        i = 0
+
+        for cl in inputFileDataSetOrig:
+            row = []
+
+            ## only need one cluster row from one cluster group
             if cl[norepeat_column] in repeatColumnData:
                 continue
-            row=[]
+
             for idx in range(len(cl)):
                 if idx in res_cols:
-                    # no value is -1
-                    # if cl[idx]=='':
-                        # cl[idx]=-1
+                    if i==0:
+                        row.append(cl[idx])
+                    else:
                     #chromsome 1->chr1
-                    if chr_column !=-1:
-                        chr_str = cl[chr_column]
-                        if not chr_str.startswith('chr'):
-                            cl[chr_column]='chr'+cl[chr_column]
+                        if chr_column !=-1:
+                            chr_str = cl[chr_column]
+                            if not chr_str.startswith('chr'):
+                                cl[chr_column]='chr'+str(cl[chr_column]).upper()
                     # observe column not ''
-                    if observe_column !=-1:
-                        if cl[observe_column]!='':###observe column not empty
-                            row.append(cl[idx])
-                            repeatColumnData.append(cl[norepeat_column])
-
+                        if observe_column !=-1:
+                            if cl[observe_column]!='':###observe column not empty
+                                row.append(cl[idx])
+                                repeatColumnData.append(cl[norepeat_column])
+            
+            i+=1
             if (row != []):
                 colDataSet.append(row)
     
@@ -178,22 +188,74 @@ def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
 
 def genIdiographicaData(roiDataSet,datafileabspath):
 
+    #roiDataSet
+
+    #clustername chromsome region(left)
+
+
     resultFilePath = generateResultFilePath(datafileabspath)
     if os.path.isfile(resultFilePath):
         print("delete old  result file :%s" % resultFilePath)
         os.remove(resultFilePath)
 
-    objDataSet=roiDataSet
+    objDataSet=[]
+
+    #idiographica data template
+    #http://rtools.cbrc.jp/idiographica/format.html
+
+    titleRow=[] #[title ...]
+    legendRows=[] #[[legend ...],[legend ...]]
+
+
+    chr_column = -1
+    region_column = -1
+    cluster_column = -1
+
+
+    for i in range(len(roiDataSet[0])):
+        
+        if roiDataSet[0][i].lower() == 'clustername':
+            cluster_column = i
+            print('cluster column:%s' % cluster_column)
+        if roiDataSet[0][i].lower() == 'chromosome':
+            chr_column = i
+            print('chromosome column:%s' % chr_column)
+        if roiDataSet[0][i].lower() == 'region':
+            region_column = i
+            print('region column:%s' % region_column)
+    
+
+    mmXY = list(range(1,20,1))
+    mmXY.extend(['X','Y'])
+    
+    chrSet = list(map(lambda x:'chr'+str(x),mmXY))
+
+    for j in range(len(roiDataSet)):
+        if j==0:
+            continue
+        if roiDataSet[j][chr_column] not in chrSet:
+            print('-'*100)
+            print(roiDataSet[j][chr_column])
+            continue
+        row = []
+        ##row.append(roiDataSet[j][cluster_column])
+        row.append('mapping')
+        row.append(7)
+        row.append('red')
+        row.append('.')
+        row.append('.')
+        row.append(roiDataSet[j][chr_column])
+        row.append(roiDataSet[j][region_column])
+        row.append(int(roiDataSet[j][region_column])+1)
+        row.append('.')
+        objDataSet.append(row)
 
     
 
 
 
 
-
-
-
-    saveDataToCSV([],objDataSet,resultFilePath)
+    saveDataToCSV([],objDataSet,resultFilePath,'\t')
 
 def main():
     try:
