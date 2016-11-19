@@ -720,7 +720,7 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 	resultFilePath = generateResultFilePath(clusterfileabspath,prefix)
 	
 		
-	saveDataToCSV([],clusterFileDataSet,resultFilePath)	
+	saveDataToCSV([],clusterFileDataSet,resultFilePath,',')	
 						
 	print("calculated end")
 
