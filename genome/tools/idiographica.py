@@ -96,10 +96,10 @@ def generateResultFilePath(dataFilePath,prefix=''):
 	print("generated end")
 	return resultFilePath
 
-def getColDataFromFile(dataFilePath,idioConfigs):
-	_getColDataFromFile(dataFilePath,idioConfigs)
+def getROIDataFromFile(dataFilePath,idioConfigs):
+	_getROIDataFromFile(dataFilePath,idioConfigs)
 
-def _getColDataFromFile(dataFilePath,idioConfigs):
+def _getROIDataFromFile(dataFilePath,idioConfigs):
     print("acting input   data file")
     if os.path.isdir(dataFilePath):
         print("  data file is a directory:%s" % dataFilePath)
@@ -108,18 +108,18 @@ def _getColDataFromFile(dataFilePath,idioConfigs):
                 filename,fileext=os.path.splitext(file)
                 if fileext=='.csv':
                     datafileabspath = root+os.sep+file
-                    _getColDataFromSingleFile(datafileabspath,idioConfigs)
+                    _getROIDataFromSingleFile(datafileabspath,idioConfigs)
     elif os.path.isfile(dataFilePath):
         print("  data file is a single file:%s" % dataFilePath)
         datafileabspath = os.path.abspath(dataFilePath)
-        _getColDataFromSingleFile(datafileabspath,idioConfigs)
+        _getROIDataFromSingleFile(datafileabspath,idioConfigs)
     print("action is end")
 
 
 
 
 
-def _getColDataFromSingleFile(datafileabspath,idioConfigs):
+def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
     print("data file :%s" % datafileabspath)
     if not os.path.isfile(datafileabspath):
         print("data file :%s is not exist!" % datafileabspath)
@@ -219,7 +219,7 @@ def main():
 
 
     if input_data != '':
-            getColDataFromFile(input_data,idioConfigs)
+            getROIDataFromFile(input_data,idioConfigs)
     else:
         sys.exit()
 
