@@ -96,10 +96,10 @@ def generateResultFilePath(dataFilePath,prefix=''):
 	print("generated end")
 	return resultFilePath
 
-def getROIDataFromFile(dataFilePath,idioConfigs):
-	_getROIDataFromFile(dataFilePath,idioConfigs)
+def genObjDataFromFile(dataFilePath,idioConfigs):
+	_genObjDataFromFile(dataFilePath,idioConfigs)
 
-def _getROIDataFromFile(dataFilePath,idioConfigs):
+def _genObjDataFromFile(dataFilePath,idioConfigs):
     print("acting input   data file")
     if os.path.isdir(dataFilePath):
         print("  data file is a directory:%s" % dataFilePath)
@@ -108,16 +108,14 @@ def _getROIDataFromFile(dataFilePath,idioConfigs):
                 filename,fileext=os.path.splitext(file)
                 if fileext=='.csv':
                     datafileabspath = root+os.sep+file
-                    _getROIDataFromSingleFile(datafileabspath,idioConfigs)
+                    roiDataSet = _getROIDataFromSingleFile(datafileabspath,idioConfigs)
+                    genIdiographicaData(roiDataSet,datafileabspath)
     elif os.path.isfile(dataFilePath):
         print("  data file is a single file:%s" % dataFilePath)
         datafileabspath = os.path.abspath(dataFilePath)
-        _getROIDataFromSingleFile(datafileabspath,idioConfigs)
+        roiDataSet = _getROIDataFromSingleFile(datafileabspath,idioConfigs)
+        genIdiographicaData(roiDataSet,datafileabspath)
     print("action is end")
-
-
-
-
 
 def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
     print("data file :%s" % datafileabspath)
@@ -130,10 +128,10 @@ def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
     observe_column = idioConfigs['observe_column']
     norepeat_column = idioConfigs['norepeat_column']
 
-    resultFilePath = generateResultFilePath(datafileabspath)
-    if os.path.isfile(resultFilePath):
-        print("delete old  result file :%s" % resultFilePath)
-        os.remove(resultFilePath)
+    # resultFilePath = generateResultFilePath(datafileabspath)
+    # if os.path.isfile(resultFilePath):
+        # print("delete old  result file :%s" % resultFilePath)
+        # os.remove(resultFilePath)
 
     print("loading file")
     # print(datafileabspath)
@@ -174,9 +172,28 @@ def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
 
             if (row != []):
                 colDataSet.append(row)
-                
-    saveDataToCSV([],colDataSet,resultFilePath)	
+    
+    return colDataSet
+    # saveDataToCSV([],colDataSet,resultFilePath)	
 
+def genIdiographicaData(roiDataSet,datafileabspath):
+
+    resultFilePath = generateResultFilePath(datafileabspath)
+    if os.path.isfile(resultFilePath):
+        print("delete old  result file :%s" % resultFilePath)
+        os.remove(resultFilePath)
+
+    objDataSet=roiDataSet
+
+    
+
+
+
+
+
+
+
+    saveDataToCSV([],objDataSet,resultFilePath)
 
 def main():
     try:
@@ -219,7 +236,7 @@ def main():
 
 
     if input_data != '':
-            getROIDataFromFile(input_data,idioConfigs)
+            genObjDataFromFile(input_data,idioConfigs)
     else:
         sys.exit()
 
