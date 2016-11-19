@@ -113,10 +113,22 @@ def generateResultFilePath(dataFilePath,prefix=''):
 	return resultFilePath
 
 
+def postObjDataFile(dataFilePath):
+    _postObjDataFile(dataFilePath)
+
+def _postObjDataFile(dataFilePath):
+    if os.path.isdir(dataFilePath):
+        print("  data file is a directory:%s" % dataFilePath)
+        for root,dirs,files in os.walk(os.path.abspath(dataFilePath)):
+            for fl in files:
+                filename,fileext=os.path.splitext(fl)
+                if fileext=='.csv':
+                    datafileabspath = os.path.join(root,fl)
+                    print(datafileabspath)
 
 
 def renameObjDataFile(dataFilePath):
-	_renameObjDataFile(dataFilePath)
+    _renameObjDataFile(dataFilePath)
 
 def _renameObjDataFile(dataFilePath):
 
@@ -366,7 +378,8 @@ def main():
             genObjDataFromFile(input_data,idioConfigs)
         elif operator == 'rename':##重命名文件，添加title
             renameObjDataFile(input_data)
-        #批量提交
+        elif operator == 'post':##批量提交
+            postObjDataFile(input_data)
     else:
         sys.exit()
 
@@ -374,8 +387,3 @@ def main():
 if __name__ == "__main__":
 	main()
 
-
-
-
-
-    
