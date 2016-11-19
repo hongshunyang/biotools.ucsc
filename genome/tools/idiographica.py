@@ -7,8 +7,8 @@
 ##cp -r ../result/11182016-1 11182016-1-idio
 ## 生成map文件
 ##./idiographica.py -i ../data/11182016-1-idio/ -c 0,9,10 -b 0 -r 9 -n 0 -o 'gen'
-## 变更文件名
-
+## 变更文件名,把文件名作为title添加至map文件,生成对照文件名列表
+## ./idiographica.py -i ../result/11182016-1-idio/ -o 'rename'
 ## 批量提交文件
 ## 检查gmail,获取文件下载地址并下载
 
@@ -35,9 +35,11 @@ def usage():
     print('-b:observe column,cluster name column')
     print('-r:region column,generates left and right column base this column')
     print('-n:no repeat column,get only one clustername from one group cluster')
+    print('-o:operator:gen,rename,post,gmail')
     print('get roi data from single file or directory')
-    print('./idio.py -i ../result/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0')
-
+    print('./idio.py -i ../result/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0 -o "gen" ')
+    print('chanage original file to idiographica map file')
+    print('./idiographica.py -i ../result/11182016-1-idio/ -o "rename"')
 def getDataFromCSV(title,spliter,filePath):
 	print("reading data from csv file:%s" % filePath)
 	data = []
@@ -145,7 +147,7 @@ def _renameObjDataFile(dataFilePath):
                     #read
                     mapDataSet = getDataFromCSV(False,'\t',datafileabspath)
                     ##title
-                    titleSet = ['title',32,'blue',str(i)]
+                    titleSet = ['title',24,'blue',str(i)]
                     mapDataSet.insert(0,titleSet)
                     idio_filepath_dir = os.path.dirname(idio_filepath)
                     if not os.path.exists(idio_filepath_dir):
