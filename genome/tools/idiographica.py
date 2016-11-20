@@ -6,11 +6,11 @@
 ## 准备数据
 ##cp -r ../result/11182016-1 ../data/11182016-1-idio
 ## 生成map文件
-##./idiographica.py -i ../data/11182016-1-idio/ -c 0,9,10 -b 0 -r 9 -n 0 -o 'gen'
+##./idiographica.py -i ../data/11182016-1-idio/ -c 0,9,10 -b 0 -r 9 -n 0 -o gen
 ## 变更文件名,把文件名作为title添加至map文件,生成对照文件名列表
-## ./idiographica.py -i ../result/11182016-1-idio/ -o 'rename'
+## ./idiographica.py -i ../result/11182016-1-idio/ -o rename
 ## 批量提交文件
-## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o 'post'
+## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o post
 ## 检查gmail,获取文件下载地址并下载
 ## ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
 ##todo gmail.download  配置idio form 参数，url
@@ -51,6 +51,37 @@ def usage():
     print('./idiographica.py -i _result/idiographica/11182016-1-idio/ -o "post"')
     print('download pdf from gmail')
     print('./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv')
+
+
+
+
+def readSetting(option,section,filePath):
+	
+    conf = configparser.ConfigParser() 
+    conf.read(filepath)
+    option = option.lower()
+    if os.path.isfile(filePath):
+        ##print section+":"+option + " read value from " +filePath
+        pass
+    else:
+        print("%s not exist" % filePath)
+        sys.exit()
+    
+    if section not in conf.sections():
+        print(" %s not exist" % section)
+        sys.exit()
+    else:
+        if option not in conf.options(section):
+            print(" %s not exist" % option)
+            sys.exit()
+        else:
+            val = conf.get(section,option)
+            if val != '':
+                return val
+            else:
+                print('%s : %s is null' % (section,option))
+                sys.exit()
+
 def getDataFromCSV(title,spliter,filePath):
 	print("reading data from csv file:%s" % filePath)
 	data = []
@@ -153,6 +184,11 @@ def _postObjDataFile(dataFilePath):
     #formData['mail_to']='yanghongshun@gmail.com'
     formData['mail_to']='xiaoni.pitt@gmail.com'
 
+    # for k,v in formData.items():
+        # print('%s=%s' % (k,v))
+
+    # sys.exit()
+        
 
     result_filename = 'idiographica_post.csv'
     result_tmp_dirstr = os.path.dirname(os.path.abspath(sys.argv[0]))
