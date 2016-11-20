@@ -18,6 +18,11 @@
 import os,sys,configparser,getopt
 import csv,shutil
 
+import requests
+from requests_toolbelt import MultipartEncoder
+import lxml.html
+import re
+import time
 
 # get custom columns data from data files 
 
@@ -117,6 +122,38 @@ def postObjDataFile(dataFilePath):
     _postObjDataFile(dataFilePath)
 
 def _postObjDataFile(dataFilePath):
+
+    url = 'http://rtools.cbrc.jp/idiographica/'
+
+    r=requests.get(url)
+    form_page = lxml.html.fromstring(r.text)
+    form = form_page.forms[0]
+    
+    post_url = url+form.action 
+
+    fields = form.fields.keys()
+    
+    formData = {}
+
+    for field_name in fields:
+        formData[field_name]=form.fields[field_name]
+
+
+    #set default Value
+    formData['species']='mm10'
+    formData['format']='pdf'
+    formData['orientation']='h'
+    formData['size']='A4'
+    formData['mail_to']='yanghongshun@gmail.com'
+
+
+    result_filename = 'idiographica_post.csv'
+    result_tmp_dirstr = os.path.dirname(os.path.abspath(sys.argv[0]))
+    postResultPath = os.path.join(result_tmp_dirstr,APP_TOOLS_RESULT_DIRNAME,result_filename)
+   
+
+    postDataSet = []
+
     if os.path.isdir(dataFilePath):
         print("  data file is a directory:%s" % dataFilePath)
         for root,dirs,files in os.walk(os.path.abspath(dataFilePath)):
@@ -124,7 +161,28 @@ def _postObjDataFile(dataFilePath):
                 filename,fileext=os.path.splitext(fl)
                 if fileext=='.csv':
                     datafileabspath = os.path.join(root,fl)
-                    print(datafileabspath)
+                    formData['description']=('filename',open(datafileabspath,'rb'),'text/plain')
+                    postData = MultipartEncoder(fields=formData)
+                    header={'Content-Type': postData.content_type}
+                    print('posting...')
+                    rp=requests.post(post_url,data=postData,headers=header)
+                    if rp.status_code == 200:
+                        print('posted successfully')
+                        # print(rp.text)
+                        responseHtml=lxml.html.fromstring(rp.text)
+                        responseHtmlContent = responseHtml.text_content()
+                        print(responseHtmlContent)
+                        pat=re.compile(r"\((.*?)\)", re.I|re.X)
+                        taskList=[]
+                        taskList = pat.findall(responseHtmlContent)
+                        taskList=list(map(lambda x:x.replace(' ',''),taskList)) 
+                        # print(taskList)
+                        taskList.append(datafileabspath)
+                        postDataSet.append(taskList)
+                        time.sleep(3)
+
+        if postDataSet !=[]:
+            saveDataToCSV([],postDataSet,postResultPath,'\t')
 
 
 def renameObjDataFile(dataFilePath):
