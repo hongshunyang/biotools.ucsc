@@ -12,7 +12,7 @@
 ## 批量提交文件
 ## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o 'post'
 ## 检查gmail,获取文件下载地址并下载
-
+## ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
 
 
 
@@ -49,7 +49,8 @@ def usage():
     print('./idiographica.py -i ../result/11182016-1-idio/ -o "rename"')
     print('batch post data to remote idiographic ')
     print('./idiographica.py -i _result/idiographica/11182016-1-idio/ -o "post"')
-
+    print('download pdf from gmail')
+    print('./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv')
 def getDataFromCSV(title,spliter,filePath):
 	print("reading data from csv file:%s" % filePath)
 	data = []
@@ -149,7 +150,8 @@ def _postObjDataFile(dataFilePath):
     formData['format']='pdf'
     formData['orientation']='h'
     formData['size']='A4'
-    formData['mail_to']='yanghongshun@gmail.com'
+    #formData['mail_to']='yanghongshun@gmail.com'
+    formData['mail_to']='xiaoni.pitt@gmail.com'
 
 
     result_filename = 'idiographica_post.csv'
