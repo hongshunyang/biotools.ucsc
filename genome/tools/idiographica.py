@@ -10,6 +10,7 @@
 ## 变更文件名,把文件名作为title添加至map文件,生成对照文件名列表
 ## ./idiographica.py -i ../result/11182016-1-idio/ -o 'rename'
 ## 批量提交文件
+## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o 'post'
 ## 检查gmail,获取文件下载地址并下载
 
 
@@ -22,7 +23,8 @@ import requests
 from requests_toolbelt import MultipartEncoder
 import lxml.html
 import re
-import time
+from time import sleep
+from datetime import datetime, date, time
 
 # get custom columns data from data files 
 
@@ -45,6 +47,9 @@ def usage():
     print('./idio.py -i ../result/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0 -o "gen" ')
     print('chanage original file to idiographica map file')
     print('./idiographica.py -i ../result/11182016-1-idio/ -o "rename"')
+    print('batch post data to remote idiographic ')
+    print('./idiographica.py -i _result/idiographica/11182016-1-idio/ -o "post"')
+
 def getDataFromCSV(title,spliter,filePath):
 	print("reading data from csv file:%s" % filePath)
 	data = []
@@ -177,9 +182,10 @@ def _postObjDataFile(dataFilePath):
                         taskList = pat.findall(responseHtmlContent)
                         taskList=list(map(lambda x:x.replace(' ',''),taskList)) 
                         # print(taskList)
+                        taskList.append(datetime.now().strftime('%m-%d-%Y %H:%m:%S'))
                         taskList.append(datafileabspath)
                         postDataSet.append(taskList)
-                        time.sleep(3)
+                        sleep(3)
 
         if postDataSet !=[]:
             saveDataToCSV([],postDataSet,postResultPath,'\t')
