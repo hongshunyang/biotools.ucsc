@@ -78,3 +78,46 @@
 ```shell
 ./app.py -x ../data/09242016 -b _data/GRCm38_CDS_53UTR_INTRON.csv
 ```
+
+#
+
+
+# Idiographic
+
+## Options
+
+* -i:single file or directory
+* -c:roi data columns
+* -b:observe column,cluster name column
+* -r:region column,generates left and right column base this column
+* -n:no repeat column,get only one clustername from one group cluster
+* -o:operator:gen,rename,post,gmail
+
+> get roi data from single file or directory
+```
+./idiographica.py -i ../data/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0 -o gen
+```
+> chanage original file to idiographica map file
+```
+./idiographica.py -i ../result/11182016-1-idio/ -o rename
+```
+> batch post data to remote idiographic
+```
+> ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o post -f gmail.download.ini
+```
+> download pdf from gmail
+```
+> ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
+```
+
+
+
+
+
+
+
+
+
+
+
+
