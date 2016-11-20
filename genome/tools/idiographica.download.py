@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 # Copyright (C) yanghongshun@gmail.com
+
+## http://rtools.cbrc.jp/idiographica/ Version 2.2 (Updated July, 2013) 
+
 #download
 #./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
 

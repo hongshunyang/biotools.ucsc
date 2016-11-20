@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Copyright (C) yanghongshun@gmail.com
+
+## http://rtools.cbrc.jp/idiographica/ Version 2.2 (Updated July, 2013) 
 # cluster
 ##./app.py -c ../data/11182016-1/ -o 20 -f 1 -e 3 -t 2500
 ## 准备数据
