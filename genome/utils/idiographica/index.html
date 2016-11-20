@@ -1,0 +1,276 @@
+﻿<html>
+<head> 
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Idiographica - Create Your Own Idiograms On-demand!</title>  
+<meta name="description" content="Idiographica is a web server for you to create your own idiograms on-demand."> 
+<style type="text/css">
+  p { text-indent: 1em; }
+</style>
+<script language="JavaScript">
+  function setAnn() {
+    fobj = document.inputFORM;
+    if (fobj["orientation"][1].checked) {
+      fobj["annotation"][0].disabled = true;
+      fobj["annotation"][1].checked = true;
+    } else {
+      fobj["annotation"][0].disabled = false;
+    }
+  }
+  var opnull = new Option("----------", "none");
+  var opgband = new Option("Cytogenetic band (Giemsa stain)", "gband");
+  var slidx
+  function setSp() {
+    fobj = document.inputFORM;
+    if (fobj["species"].value == "dm3") {
+      fobj["background"].options[1] = opnull;
+      if (fobj["background"][1].selected == true) {
+        fobj["background"][0].selected = true;
+      }
+    } else {
+      slidx = fobj["background"].selectedIndex;
+      fobj["background"].options[1] = opgband;
+      fobj["background"][slidx].selected = true;
+    }
+    setBg();
+  }
+  function setBg() {
+    fobj = document.inputFORM;
+    if (fobj["background"].value == "gband") {
+      fobj["strand"][0].disabled = true;
+      fobj["strand"][1].checked = true;
+      fobj["logscale"][0].disabled = true;
+      fobj["logscale"][1].checked = true;
+      fobj["gradation"][1].disabled = true;
+      fobj["gradation"][2].disabled = true;
+      fobj["gradation"][3].disabled = true;
+      fobj["gradation"][4].disabled = true;
+      fobj["gradation"][0].checked = true;
+    } else {
+      if (fobj["background"].value == "gc") {
+        fobj["strand"][0].disabled = true;
+        fobj["strand"][1].checked = true;
+      } else {
+        fobj["strand"][0].disabled = false;
+      }
+      fobj["logscale"][0].disabled = false;
+      fobj["gradation"][1].disabled = false;
+      fobj["gradation"][2].disabled = false;
+      fobj["gradation"][3].disabled = false;
+      fobj["gradation"][4].disabled = false;
+    }
+  }
+  window.onload=setAnn;
+  window.onload=setBg;
+</script>
+
+<body style="font-family:'Lucida Grande',Meiryo,sans-serif; color:#000000; font-size:1em;">
+<img alt="Idiographica" src="resources/idiographica_logo.png">
+<br>
+<p><b>Version 2.2 (Updated July, 2013) <font color="red">Now supports mm10 Mouse genome.</font></b></p>
+<p style="font-size:0.9em; width:800px;">
+Idiographica is a web server for you to create your own idiogram.
+Please fill the following web form and click on the submit button.
+The Idiographica server will send you an email to notify the completion of the idiogram creation task.
+You can use the generated idiograms without any restriction or obligation.
+<br>
+Please see <a href="samples/samples.html" target="_blank">sample idiograms</a>.
+</p>
+<dl style="font-size:0.9em; width:800px; background:rgb(238, 243, 245);">
+<dt>Idiographica: a general-purpose web application to build idiograms on-demand for human, mouse and rat</dt>
+<dd>Kin T and Ono Y, <i>Bioinformatics 2007; <a href="http://bioinformatics.oxfordjournals.org/content/23/21/2945" target="_blank">doi: 10.1093/bioinformatics/btm455</a></i></dd>
+</dl>
+
+<table>
+<tr>
+<td valign="bottom"><img alt="Sample idiographica generated idiogram (whole shot)" src="resources/idiogram_wholeshot.png"></td>
+<td valign="bottom"><img alt="Sample idiographica generated idiogram (zoom up)" src="resources/idiogram_zoomup.png"></td>
+</tr>
+<tr style="font-size:0.9em;">
+<td align="center" valign="top">Whole shot</td>
+<td align="center" valign="top">Zoom up</td>
+</tr>
+</table>
+
+<div style="font-size:0.9em;">
+<form name="inputFORM" action="accept_request.py" enctype="multipart/form-data" method="post">
+<ul>
+<li>
+<b>E-mail address (<i style="color: red;">required</i>)</b><br>
+<input name="mail_to" type="text" size="40">
+</li><br>
+<li>
+<b>Species</b> (currently, human, mouse, rat and fruit fly are available)<br>
+<select name="species" onchange="setSp()">
+<option value="hg19" selected="">Human (hg19)</option>
+<option value="hg18">Human (hg18)</option>
+<option value="hg17">Human (hg17)</option>
+<option value="mm10">Mouse (mm10)</option>
+<option value="mm9">Mouse (mm9)</option>
+<option value="mm8">Mouse (mm8)</option>
+<option value="rn4">Rat (rn4)</option>
+<option value="rn3">Rat (rn3)</option>
+<option value="dm3">Fruit fly (dm3)</option>
+</select> 
+</li><br>
+<li>
+<b>Chromosome</b><br>
+<input name="chromosome" type="radio" checked="" value="all"> All<br>
+<input name="chromosome" type="radio" value="auto"> Automatic  (display only chromosomes that have mapping information.)<br>
+<input name="chromosome" type="radio" value="chromosomes"> Chromosomes
+<input name="chrom_list" type="text" size="20"><br>
+(please specify <a href="chromosome.html" target="_blank">a list of chromosomes</a> separated by commas e.g. "chr1,chr21,chrX".) 
+</li><br>
+<li><b>Background</b> (varieties of band infomation rendered <i>a la</i> cytogenetic band. <a href="background.html" target="_blank">More help</a>)
+<br>
+<select name="background" onchange="setBg()">
+<option value="none" selected="">None</option>
+<option value="gband">Cytogenetic band (Giemsa stain)</option>
+<option value="gc">GC content</option>
+<option value="rmsk">Repetitive element density</option>
+<option value="known1">Known gene density (number)</option>
+<option value="known2">Known gene density (base coverage)</option>
+<option value="mrna1">mRNA density (number)</option>
+<option value="mrna2">mRNA density (base coverage)</option>
+<option value="est1">EST density (number)</option>
+<option value="est2">EST density (base coverage)</option>
+</select> 
+<br><br>
+<table style="font-size:1.0em;">
+<tr height="20">
+<td>Strand-sensitivity:</td>
+<td><input name="strand" type="radio" value="on"> ON</td>
+<td><input name="strand" type="radio" checked="" value="off"> OFF</td>
+</tr>
+<tr height="20">
+<td>Log-scale:</td>
+<td><input name="logscale" type="radio" value="on"> ON</td>
+<td><input name="logscale" type="radio" checked="" value="off"> OFF</td>
+</tr>
+<tr height="20">
+<td>Gradation:</td>
+<td><input name="gradation" type="radio" checked="" value="1"><img alt="Black->White" src="resources/gradation1.png"></td>
+<td><input name="gradation" type="radio" value="2"><img alt="Red->Green" src="resources/gradation2.png"></td>
+<td><input name="gradation" type="radio" value="3"><img alt="Red->Blue" src="resources/gradation3.png"></td>
+<td><input name="gradation" type="radio" value="4"><img alt="Red->Green->Blue" src="resources/gradation4.png"></td>
+<td><input name="gradation" type="radio" value="5"><img alt="Bar" src="resources/gradation5.png"></td>
+</tr>
+</table>
+</li>
+<br>
+<li>
+<b>Annotation (title, legend, and mapping information)</b><br>
+<p style="font-size:0.9em; width:800px;">
+If you need, you can add the title, legend, and mapping information to your idiogram.
+Please create a description file and upload it.
+The description file follows a simple format which is described at <a href="format.html" target="_blank">the description format specification</a>.
+  ---   <em style="color: rgb(255, 0, 0);">Please read this first</em>. 
+</p>
+<input name="description" type="file" size="30">
+</li>
+<br>
+<li><b>Font</b><br>
+<table>
+<tr>
+<td><input name="font" type="radio" checked="" value="1"><img alt="Bitstream Vera Sans" src="resources/font1.png"></td>
+<td><input name="font" type="radio" value="2"><IMG alt="Bitstream Vera Sans Mono" src="resources/font2.png"></td>
+<td><input name="font" type="radio" value="3"><IMG alt="Bitstream Vera Serif" src="resources/font3.png"></td>
+<td><input name="font" type="radio" value="4"><IMG alt="Courier" src="resources/font4.png"></td>
+</tr>
+<tr>
+<td><input name="font" type="radio" value="5"><IMG alt="URW Bookman L" src="resources/font5.png"></td>
+<td><input name="font" type="radio" value="6"><IMG alt="URW Chancery L" src="resources/font6.png"></td>
+<td><input name="font" type="radio" value="7"><IMG alt="URW Gothic L" src="resources/font7.png"></td>
+<td><input name="font" type="radio" value="8"><IMG alt="URW Palladio L" src="resources/font8.png"></td>
+</tr>
+</table>
+</li>
+<br>
+<li><b>Other configuration</b>
+<br>
+<table style="font-size:1.0em;">
+<tr height="20">
+<td>Size (200dpi):</td>
+<td>
+<select name="size">
+<option value="B5">B5</option>
+<option value="B5R">B5R</option>
+<option value="A4">A4</option>
+<option value="A4R" selected="">A4R</option>
+<option value="B4">B4</option>
+<option value="B4R">B4R</option>
+<option value="A3">A3</option>
+<option value="A3R">A3R</option>
+<option value="B3">B3</option>
+<option value="B3R">B3R</option>
+<option value="A2">A2</option>
+<option value="A2R">A2R</option>
+<option value="B2">B2</option>
+<option value="B2R">B2R</option>
+<option value="A1">A1</option>
+<option value="A1R">A1R</option>
+<option value="B1">B1</option>
+<option value="B1R">B1R</option>
+<option value="A0">A0</option>
+<option value="A0R">A0R</option>
+<option value="B0">B0</option>
+<option value="B0R">B0R</option>
+</select> 
+</td>
+<td></td>
+<td width="20"></td>
+<td valign="bottom" rowspan="4"><img alt="Sample portrait idiogram" src="resources/idiogram_portrait.png"></td>
+<td width="20"></td>
+<td valign="bottom" rowspan="4"><img alt="Sample landscape idiogram" src="resources/idiogram_landscape.png"></td>
+</tr>
+<tr height="20">
+<td>Format:</td>
+<td><INPUT name="format" type="radio" checked="" value="png"> PNG</td>
+<td><INPUT name="format" type="radio" value="pdf"> PDF</td></tr>
+<tr height="20">
+<td>Orientation:</td>
+<td nowrap=""><INPUT name="orientation" onclick="setAnn()" type="radio" checked="" value="v"> Vertical</td>
+<td nowrap=""><INPUT name="orientation" onclick="setAnn()" type="radio" value="h"> Horizontal</td>
+<td></td>
+</tr>
+<tr height="20">
+<td>Annotation:</td>
+<td><input name="annotation" type="radio" value="on"> ON</td>
+<td><input name="annotation" type="radio" checked="" value="off"> OFF</td>
+</tr>
+<tr height="20">
+<td>3D shading:</td>
+<td><input name="shading" type="radio" value="on"> ON</td>
+<td><input name="shading" type="radio" checked="" value="off"> OFF</td>
+<td></td>
+<td nowrap="">Portrait (e.g., A4)</td>
+<td></td>
+<td nowrap="">Landscape (e.g., A4R)</td></tr>
+<TR height="20">
+<td></td> <td></td> <td></td> <td></td>
+<td valign="bottom" rowspan="4"><img alt="Sample vertival idiogram" src="resources/idiogram_vertical.png"></td>
+<td width="20"></td>
+<td valign="bottom" rowspan="4"><img alt="Sample horizontal idiogram" src="resources/idiogram_horizontal.png"></td>
+</tr>
+<tr height="20"></tr>
+<tr height="20"></tr>
+<tr height="20"></tr>
+<tr height="20">
+<td></td> <td></td> <td></td> <td></td>
+<td nowrap="">Vertical</td>
+<td></td>
+<td nowrap="">Horizontal</td>
+</tr>
+</table>
+</li>
+<input type="submit" value="Submit">
+</ul>
+</form>
+<hr>
+<h4>Disclaimer</h4>
+<p style="font-size:0.8em; width:800px;">
+Development of Idiographica server was financially supported by "the Functional RNA Project" funded by New Energy and Industrial Technology Development Organization (NEDO).
+Idiographica server has been run by RNA Informatics Team, Computational Biology Research Center (CBRC) a division of National Institute of Advanced Industrial Science and Technology (AIST). 
+</p>
+
+</body>
+</html>

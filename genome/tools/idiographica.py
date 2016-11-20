@@ -10,10 +10,9 @@
 ## 变更文件名,把文件名作为title添加至map文件,生成对照文件名列表
 ## ./idiographica.py -i ../result/11182016-1-idio/ -o rename
 ## 批量提交文件
-## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o post
+## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o post -f gmail.download.ini
 ## 检查gmail,获取文件下载地址并下载
 ## ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
-##todo gmail.download  配置idio form 参数，url
 
 
 import os,sys,configparser,getopt
@@ -44,11 +43,11 @@ def usage():
     print('-n:no repeat column,get only one clustername from one group cluster')
     print('-o:operator:gen,rename,post,gmail')
     print('get roi data from single file or directory')
-    print('./idiographica.py -i ../data/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0 -o "gen" ')
+    print('./idiographica.py -i ../data/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0 -o gen')
     print('chanage original file to idiographica map file')
-    print('./idiographica.py -i ../result/11182016-1-idio/ -o "rename"')
+    print('./idiographica.py -i ../result/11182016-1-idio/ -o rename ')
     print('batch post data to remote idiographic ')
-    print('./idiographica.py -i _result/idiographica/11182016-1-idio/ -o "post"')
+    print('./idiographica.py -i _result/idiographica/11182016-1-idio/ -o post -f gmail.download.ini')
     print('download pdf from gmail')
     print('./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv')
 
@@ -58,7 +57,7 @@ def usage():
 def readSetting(option,section,filePath):
 	
     conf = configparser.ConfigParser() 
-    conf.read(filepath)
+    conf.read(filePath)
     option = option.lower()
     if os.path.isfile(filePath):
         ##print section+":"+option + " read value from " +filePath
@@ -155,12 +154,14 @@ def generateResultFilePath(dataFilePath,prefix=''):
 	return resultFilePath
 
 
-def postObjDataFile(dataFilePath):
-    _postObjDataFile(dataFilePath)
+def postObjDataFile(dataFilePath,formSetting):
+    _postObjDataFile(dataFilePath,formSetting)
 
-def _postObjDataFile(dataFilePath):
+def _postObjDataFile(dataFilePath,formSetting):
 
-    url = 'http://rtools.cbrc.jp/idiographica/'
+    url = readSetting('getUrl','Idiographica',formSetting)
+
+    # url = 'http://rtools.cbrc.jp/idiographica/'
 
     r=requests.get(url)
     form_page = lxml.html.fromstring(r.text)
@@ -177,13 +178,19 @@ def _postObjDataFile(dataFilePath):
 
 
     #set default Value
-    formData['species']='mm10'
-    formData['format']='pdf'
-    formData['orientation']='h'
-    formData['size']='A4'
-    #formData['mail_to']='yanghongshun@gmail.com'
-    formData['mail_to']='xiaoni.pitt@gmail.com'
+    formData['species']=readSetting('species','Idiographica',formSetting)
 
+    formData['format']=readSetting('format','Idiographica',formSetting)
+
+    formData['orientation']=readSetting('orientation','Idiographica',formSetting)
+
+    formData['size']=readSetting('size','Idiographica',formSetting)
+
+    #formData['mail_to']='yanghongshun@gmail.com'
+    formData['mail_to']=readSetting('mail_to','Idiographica',formSetting)
+
+    ## if something is wrong,please 
+    ## uncomment below ,check form fields is equal the fields in formSetting file
     # for k,v in formData.items():
         # print('%s=%s' % (k,v))
 
@@ -433,7 +440,7 @@ def genIdiographicaData(roiDataSet,datafileabspath):
 
 def main():
     try:
-        opts,args = getopt.getopt(sys.argv[1:],"hi:c:b:r:n:o:",["--input=","--columns=","--observe-column=","--chr-column=","--norepeat-column=",'--operator='])
+        opts,args = getopt.getopt(sys.argv[1:],"hi:c:b:r:n:o:f:",["--input=","--columns=","--observe-column=","--chr-column=","--norepeat-column=",'--operator=','--form-setting='])
     except getopt.GetoptError as err:
         print(err) 
         usage()
@@ -450,6 +457,9 @@ def main():
     }
 
     operator = ""
+
+    form_setting = ""
+
 
     for opt,arg in opts:
         if opt in ('-h',"--help"):
@@ -471,6 +481,8 @@ def main():
             idioConfigs['norepeat_column'] = int(arg)
         elif opt in ('-o','--operator'):
             operator = arg
+        elif opt in ('-f','--form-setting'):
+            form_setting = arg
 
 
 
@@ -481,7 +493,16 @@ def main():
         elif operator == 'rename':##重命名文件，添加title
             renameObjDataFile(input_data)
         elif operator == 'post':##批量提交
-            postObjDataFile(input_data)
+            ##check post data is from _result
+            tmp_dirstr = os.path.dirname(os.path.abspath(sys.argv[0]))
+            idio_dir = os.path.join(tmp_dirstr,APP_TOOLS_RESULT_DIRNAME,APP_TOOLS_IDIO_DIRNAME)
+            if not os.path.abspath(input_data).startswith(idio_dir):
+                print('*'*100)
+                print('Are you kidding me! The post data is not renamed!!')
+                print('*'*100)
+                sys.exit()
+            else:
+                postObjDataFile(input_data,form_setting)
     else:
         sys.exit()
 
