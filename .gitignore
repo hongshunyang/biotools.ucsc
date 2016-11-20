@@ -91,3 +91,4 @@ ENV/
 # data files
 *.xlsx
 *.csv
+genome/tools/gmail.download.ini
