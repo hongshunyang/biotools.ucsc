@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Copyright (C) yanghongshun@gmail.com
-#
+# cluster
 ##./app.py -c ../data/11182016-1/ -o 20 -f 1 -e 3 -t 2500
 ## 准备数据
-##cp -r ../result/11182016-1 11182016-1-idio
+##cp -r ../result/11182016-1 ../data/11182016-1-idio
 ## 生成map文件
 ##./idiographica.py -i ../data/11182016-1-idio/ -c 0,9,10 -b 0 -r 9 -n 0 -o 'gen'
 ## 变更文件名,把文件名作为title添加至map文件,生成对照文件名列表
@@ -13,7 +13,7 @@
 ## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o 'post'
 ## 检查gmail,获取文件下载地址并下载
 ## ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
-
+##todo gmail.download  配置idio form 参数，url
 
 
 import os,sys,configparser,getopt
@@ -44,7 +44,7 @@ def usage():
     print('-n:no repeat column,get only one clustername from one group cluster')
     print('-o:operator:gen,rename,post,gmail')
     print('get roi data from single file or directory')
-    print('./idio.py -i ../result/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0 -o "gen" ')
+    print('./idiographica.py -i ../data/11182016-1.1/ -c 0,9,10 -b 0 -r 9 -n 0 -o "gen" ')
     print('chanage original file to idiographica map file')
     print('./idiographica.py -i ../result/11182016-1-idio/ -o "rename"')
     print('batch post data to remote idiographic ')

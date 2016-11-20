@@ -119,14 +119,15 @@ def download(settings):
         email.read()
         email.fetch()
         content = email.body
+        email.delete()
         download_url = re.search("(?P<url>https?://[^\s]+)", content).group("url")
         download_url = download_url.replace(' ','')
         filename = wget.download(download_url)
         print filename
         for t in post_task:
             if filename.lower().endswith((t[0]+'.pdf').lower()):##task id
-                print 'idio name:'+t[2]  ##file path
-                print 'real name:'+renameListDict[t[2]][1]
+                #print 'idio name:'+t[2]  ##file path
+                #print 'real name:'+renameListDict[t[2]][1]
                 dstfile=renameListDict[t[2]][1]+'.pdf'
                 shutil.move(filename,dstfile)
                 break
