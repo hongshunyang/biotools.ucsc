@@ -3,7 +3,9 @@
 # Copyright (C) yanghongshun@gmail.com
 
 ## http://rtools.cbrc.jp/idiographica/ Version 2.2 (Updated July, 2013) 
-# cluster
+## 一、存在观察列，且观察列中数据重复仅取其一，最先遇到就取第一行
+## cluster->idiographica
+# 生成cluster
 ##./app.py -c ../data/11182016-1/ -o 20 -f 1 -e 3 -t 2500
 ## 准备数据
 ##cp -r ../result/11182016-1 ../data/11182016-1-idio
@@ -15,6 +17,25 @@
 ## ./idiographica.py -i _result/idiographica/11182016-1-idio/ -o post -f gmail.download.ini
 ## 检查gmail,获取文件下载地址并下载
 ## ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
+
+## 
+## 二、不存在观察列,直接取其中若干列，所有行，直接绘图
+## 不含cluster的情况->idiographica
+##文件格式转换，初步获取感兴趣数据
+## excel2csv:xlsx->csv
+#./app.py -i ../data/11222016-1-excel2csv -c 8,9 s '' -d ','
+## 准备数据
+# cp -R ../result/11222016-1-excel2csv/ ../../biotools.ucsc/genome/data/
+# 生成map文件(此处没有观察列，有观察列的一把主要考虑观察列不能重复见上述cluster)
+# ./idiographica.py -i ../data/11222016-1-excel2csv/ -c 0,1 -r 0 -o gen
+## 变更文件名,把文件名作为title添加至map文件,生成对照文件名列表
+## ./idiographica.py -i ../result/111222016-1-excel2csv/ -o rename
+## 批量提交文件
+## ./idiographica.py -i _result/idiographica/11222016-1-excel2csv/ -o post -f gmail.download.ini
+## 检查gmail,获取文件下载地址并下载
+## ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
+
+
 
 
 import os,sys,configparser,getopt
@@ -57,7 +78,7 @@ def usage():
 
 
 def readSetting(option,section,filePath):
-	
+        
     conf = configparser.ConfigParser() 
     conf.read(filePath)
     option = option.lower()
@@ -84,76 +105,76 @@ def readSetting(option,section,filePath):
                 sys.exit()
 
 def getDataFromCSV(title,spliter,filePath):
-	print("reading data from csv file:%s" % filePath)
-	data = []
-	if not os.path.isfile(filePath):
-		print("%s not exist!" % filePath)
-		sys.exit()
-	
-	csvfile=csv.reader(open(filePath, 'r'),delimiter=spliter)
-	
-	for line in csvfile:
-		data.append(line)
-	if title == True:
-		print("delete first row:title row")
-		del data[0]
-	print("reading end")
-	
-	return data
+        print("reading data from csv file:%s" % filePath)
+        data = []
+        if not os.path.isfile(filePath):
+                print("%s not exist!" % filePath)
+                sys.exit()
+        
+        csvfile=csv.reader(open(filePath, 'r'),delimiter=spliter)
+        
+        for line in csvfile:
+                data.append(line)
+        if title == True:
+                print("delete first row:title row")
+                del data[0]
+        print("reading end")
+        
+        return data
 
 
 def saveDataToCSV(title,data,filePath,fmt=''):
-	print("saving data to csv file:%s" % filePath)
-	
-	if os.path.isfile(filePath):
-		print("delete old csv file:%s" % filePath)
-		os.remove(filePath)
-	
-	file_handle = open(filePath,'w')
-	
-	if fmt=='':
-		csv_writer = csv.writer(file_handle,delimiter=' ')
-	else:
-		csv_writer = csv.writer(file_handle,delimiter=fmt)
-	
-	if len(title) >0 :
-		csv_writer.writerow(title)
-	
-	csv_writer.writerows(data)
-	
-	file_handle.close()
-	
-	print("saved end")
+        print("saving data to csv file:%s" % filePath)
+        
+        if os.path.isfile(filePath):
+                print("delete old csv file:%s" % filePath)
+                os.remove(filePath)
+        
+        file_handle = open(filePath,'w')
+        
+        if fmt=='':
+                csv_writer = csv.writer(file_handle,delimiter=' ')
+        else:
+                csv_writer = csv.writer(file_handle,delimiter=fmt)
+        
+        if len(title) >0 :
+                csv_writer.writerow(title)
+        
+        csv_writer.writerows(data)
+        
+        file_handle.close()
+        
+        print("saved end")
 
 def generateResultFilePath(dataFilePath,prefix=''):
-	
-	print("generating result file path from data file path:%s" % dataFilePath)
-	filename,fileext=os.path.splitext(os.path.basename(dataFilePath))
-	
-	if prefix=='':
-		resultFileName = 'result_'+filename+'.csv'
-	else:
-		resultFileName = 'result'+prefix+filename+'.csv'
+        
+        print("generating result file path from data file path:%s" % dataFilePath)
+        filename,fileext=os.path.splitext(os.path.basename(dataFilePath))
+        
+        if prefix=='':
+                resultFileName = 'result_'+filename+'.csv'
+        else:
+                resultFileName = 'result'+prefix+filename+'.csv'
 
 
-	dataFileAbsPath = os.path.abspath(dataFilePath)
-	
-	app_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))	
-	app_data_dir = app_root_dir + os.sep + APP_DATA_DIRNAME+os.sep
-	app_result_dir = app_root_dir + os.sep + APP_RESULT_DIRNAME+os.sep
-	
-	result_tmp_dirstr = os.path.dirname(dataFileAbsPath).replace(app_data_dir,'')
-	
-	resultFileDir = os.path.join(app_result_dir,result_tmp_dirstr)
+        dataFileAbsPath = os.path.abspath(dataFilePath)
+        
+        app_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))   
+        app_data_dir = app_root_dir + os.sep + APP_DATA_DIRNAME+os.sep
+        app_result_dir = app_root_dir + os.sep + APP_RESULT_DIRNAME+os.sep
+        
+        result_tmp_dirstr = os.path.dirname(dataFileAbsPath).replace(app_data_dir,'')
+        
+        resultFileDir = os.path.join(app_result_dir,result_tmp_dirstr)
 
-	if not os.path.exists(resultFileDir):
-		print("create directory:%s " % resultFileDir)
-		os.makedirs(resultFileDir)
-	
-	resultFilePath = os.path.join(resultFileDir,resultFileName)
-	print("result file path is:%s" % resultFilePath)
-	print("generated end")
-	return resultFilePath
+        if not os.path.exists(resultFileDir):
+                print("create directory:%s " % resultFileDir)
+                os.makedirs(resultFileDir)
+        
+        resultFilePath = os.path.join(resultFileDir,resultFileName)
+        print("result file path is:%s" % resultFilePath)
+        print("generated end")
+        return resultFilePath
 
 
 def postObjDataFile(dataFilePath,formSetting):
@@ -289,7 +310,7 @@ def _renameObjDataFile(dataFilePath):
 
 
 def genObjDataFromFile(dataFilePath,idioConfigs):
-	_genObjDataFromFile(dataFilePath,idioConfigs)
+        _genObjDataFromFile(dataFilePath,idioConfigs)
 
 def _genObjDataFromFile(dataFilePath,idioConfigs):
     print("acting input   data file")
@@ -333,11 +354,12 @@ def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
         inputFileDataSetOrig = getDataFromCSV(False,',',datafileabspath)
         inputFileDataSetOrigTitleRow = inputFileDataSetOrig[0]
         for col in inputFileDataSetOrigTitleRow:
-            print(i,col)	
-            i+=1	    
+            print(i,col)        
+            i+=1            
         inputFileColIndexMax = len(inputFileDataSetOrigTitleRow)-1
-        
-        res_cols = [x for x in res_cols if x < inputFileColIndexMax]
+       
+        # <= must consider the last columnu
+        res_cols = [x for x in res_cols if x <= inputFileColIndexMax]
         print("check valid column index")
         print(res_cols)
         colDataSet=[]      
@@ -349,11 +371,13 @@ def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
             row = []
 
             ## only need one cluster row from one cluster group
-            if cl[norepeat_column] in repeatColumnData:
-                continue
+            if norepeat_column != -1:
+                if cl[norepeat_column] in repeatColumnData:
+                    continue
 
             for idx in range(len(cl)):
                 if idx in res_cols:
+                    ## title
                     if i==0:
                         row.append(cl[idx])
                     else:
@@ -362,24 +386,27 @@ def _getROIDataFromSingleFile(datafileabspath,idioConfigs):
                             chr_str = cl[chr_column]
                             if not chr_str.startswith('chr'):
                                 cl[chr_column]='chr'+str(cl[chr_column]).upper()
-                    # observe column not ''
+                    # observe column 是否需要观察列 
                         if observe_column !=-1:
                             if cl[observe_column]!='':###observe column not empty
                                 row.append(cl[idx])
                                 repeatColumnData.append(cl[norepeat_column])
-            
+                        else:
+                            row.append(cl[idx])
             i+=1
+            print(row)
             if (row != []):
                 colDataSet.append(row)
-    
+  
+    # print(colDataSet)
     return colDataSet
-    # saveDataToCSV([],colDataSet,resultFilePath)	
+    # saveDataToCSV([],colDataSet,resultFilePath)       
 
 def genIdiographicaData(roiDataSet,datafileabspath):
 
     #roiDataSet
 
-    #clustername chromsome region(left)
+    #clustername(optional) chromsome region(left)
 
 
     resultFilePath = generateResultFilePath(datafileabspath)
@@ -418,10 +445,12 @@ def genIdiographicaData(roiDataSet,datafileabspath):
     mmXY.extend(['X','Y'])
     
     chrSet = list(map(lambda x:'chr'+str(x),mmXY))
-
+    # print(roiDataSet)
+    # sys.exit()
     for j in range(len(roiDataSet)):
-        if j==0:
+        if j==0:##title
             continue
+
         if roiDataSet[j][chr_column] not in chrSet:
             print('-'*100)
             print(roiDataSet[j][chr_column])
@@ -438,6 +467,7 @@ def genIdiographicaData(roiDataSet,datafileabspath):
         row.append(int(roiDataSet[j][region_column])+1)
         row.append('.')
         objDataSet.append(row)
+
     saveDataToCSV([],objDataSet,resultFilePath,'\t')
 
 def main():
@@ -448,7 +478,7 @@ def main():
         usage()
         sys.exit(2)
 
-    input_data=""	
+    input_data=""       
     
 
     idioConfigs = {
@@ -510,5 +540,5 @@ def main():
 
 
 if __name__ == "__main__":
-	main()
+        main()
 
