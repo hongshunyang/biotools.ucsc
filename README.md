@@ -111,7 +111,7 @@
 ```
 ### Screen
 
-![idiographic screen](./misc/idiographic.png)
+![idiographic screen](./misc/idiographic1.png)
 
 
 
