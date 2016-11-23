@@ -109,8 +109,9 @@
 ```
 > ./idiographica.download.py -g gmail.download.ini -r _result/idiographica_rename.csv -p _result/idiographica_post.csv
 ```
+### Screen
 
-
+![idiographic screen](./misc/idiographic.png)
 
 
 
