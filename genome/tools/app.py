@@ -14,6 +14,8 @@ import csv,shutil
 
 from sortedcontainers import SortedDict
 
+from Bio import Entrez
+Entrez.email = "yanghongshun@gmail.com"
 
 """
 
@@ -107,7 +109,8 @@ def usage():
 	print('-x,--exon:need to be dealed file in data directory')
 	print('./app.py -x ../data/09242016 -b _data/GRCm38_CDS_53UTR_INTRON.csv')
 	
-	
+	print('%s 通过gene_id 从ncbi获取chr，region起始点 %s' %('-'*20,'-'*20))	
+	print('--gene:dir or file that include gene_id/gene_symbol')
 	
 def getDataFromCSV(title,spliter,filePath):
 	print("reading data from csv file:%s" % filePath)
@@ -513,6 +516,83 @@ def _statsSingleResultFile_GRCm38_RepeatMasker(resultfileabspath,intersectCluste
 					
 	print("stats end")
 	return statsResultData
+
+def geneMapData(geneFilePath):
+	print("maping input  file")
+	if os.path.isdir(geneFilePath):
+		print("input file is a directory:%s" % geneFilePath)
+		for root,dirs,files in os.walk(os.path.abspath(geneFilePath)):
+			for file in files:
+				filename,fileext=os.path.splitext(file)
+				if fileext == '.csv':
+					geneMapfileabspath = root+os.sep+file					
+					_geneMapSingleFile(geneMapfileabspath)
+					
+	elif os.path.isfile(geneFilePath):
+		print("map file is a single file:%s" % geneFilePath)
+		geneMapfileabspath = os.path.abspath(geneFilePath)
+		_geneMapSingleFile(geneMapfileabspath)
+	print("action is end")
+
+def _geneMapSingleFile(genefileabspath):
+	print("dealing map file :%s" % genefileabspath)
+	if not os.path.isfile(genefileabspath):
+		print("map file :%s is not exist!" % genefileabspath)
+		sys.exit()
+		
+	print("loading file")
+
+	geneFileDataSet=[]
+	chrColumn=0
+	regionColumn=1
+	geneColumn = -1
+	
+	i=0	
+	print("generating data set from cluster file")
+
+	filename,fileext=os.path.splitext(genefileabspath)
+
+	
+	if fileext == '.csv':
+		geneFileDataSetOrig = getDataFromCSV(False,',',genefileabspath)
+		geneFileDataSetOrigTitleRow = geneFileDataSetOrig[0]
+		for col in geneFileDataSetOrigTitleRow:
+			if(geneColumn==-1 and col.lower()=='gene_id'):
+				geneColumn=i   ## insertItem : 1 0=>1
+				print('geneColumn:%s'% geneColumn)
+			i+=1
+		geneFileDataSetOrigTitleRow.insert(chrColumn,'') ## 加入chr 列	
+		geneFileDataSetOrigTitleRow.insert(regionColumn,'') ## 加入chr 列	
+		
+		geneFileDataSet.append(geneFileDataSetOrigTitleRow)			
+		for row in range(1,len(geneFileDataSetOrig)):##第2行数据开始，第1行为标题
+			geneFileRow = []
+			geneID = geneFileDataSetOrig[row][geneColumn]
+			handle = Entrez.esummary(db="gene", id=geneID)
+			record = Entrez.read(handle)
+			chrX = record['DocumentSummarySet']['DocumentSummary'][0]['Chromosome']
+			regionX = int(record['DocumentSummarySet']['DocumentSummary'][0]['ChrStart'])+1 
+			
+			## 这个GenomicInfo是不对的
+			## regionX = int(record['DocumentSummarySet']['DocumentSummary'][0]['GenomicInfo'][0]['ChrStart'])+1 ##GenomicInfo 可能为空geneid：100048885
+			#todo 目测 一个gene id 是唯一标识，不管是老鼠还是人类，id不一样
+			print('gene_id:%s,chr:%s,region:%s' % (geneID,chrX,regionX))
+			
+			geneFileDataSetOrig[row].insert(chrColumn,chrX) ## 加入chr 列
+			geneFileDataSetOrig[row].insert(regionColumn,regionX) ## 加入chr 列
+
+			for col in range(0,len(geneFileDataSetOrig[row])):
+				colValue=geneFileDataSetOrig[row][col]
+				geneFileRow.append(colValue)					
+			geneFileDataSet.append(geneFileRow)		
+	##csv end				
+	###save all cell.vaule to[[],[],...,[]]
+	print("generated end")	
+	geneFileDataSet[0][chrColumn]='chromosome'
+	
+	prefix="map_chr_region_"
+	resultFilePath = generateResultFilePath(genefileabspath,prefix)		
+	saveDataToCSV([],geneFileDataSet,resultFilePath,',')
 
 
 def clusterFile(clusterFilePath,clusterConfigs):
@@ -1075,7 +1155,7 @@ def _query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath):
 def main():
 	
 	try:
-		opts,args = getopt.getopt(sys.argv[1:],"hs:g:d:r:c:e:t:o:f:b:x:",["help","setting=","genome=","data=","result=","cluster=","record=","threshold=",'coverage=','frequency=','bed=','exon=',"intersectClusterName=","repeatClusterName="])
+		opts,args = getopt.getopt(sys.argv[1:],"hs:g:d:r:c:e:t:o:f:b:x:",["help","setting=","genome=","data=","result=","cluster=","record=","threshold=",'coverage=','frequency=','bed=','exon=',"intersectClusterName=","repeatClusterName=","gene="])
 	except getopt.GetoptError as err:
 		print(err)
 		usage()
@@ -1108,6 +1188,7 @@ def main():
 	bedFilePath =''
 	exonDataFilePath = ''
 	
+	geneFilePath = ''
 	
 	for opt,arg in opts:
 		if opt in ('-h',"--help"):
@@ -1140,26 +1221,30 @@ def main():
 			bedFilePath = arg
 		elif opt in ('-x','--exon'):
 			exonDataFilePath = arg
-		
+		elif opt in ('--gene'):
+			geneFilePath = arg
 		
 
 	###action####
 
-	if settingsVar['filePath'] !='':
-		settings = readSettings(settingsVar)
-		if dataFilePath !='':
-			profileSourceData = []			
-			profileSourceData = readyProfileSourceData(genome,settings)		
-			actDataFile(genome,settings,dataFilePath,profileSourceData)
-		if resultFilePath !='':
-			statsResultFile(genome,settings,resultFilePath,intersectClusterName,repeatClusterName)
+	if geneFilePath !="":
+		geneMapData(geneFilePath)
 	else:
-		if clusterFilePath !='':
-			clusterFile(clusterFilePath,clusterConfigs)
-		elif bedFilePath !='':
-			exonFile(exonDataFilePath,bedFilePath)
+		if settingsVar['filePath'] !='':
+			settings = readSettings(settingsVar)
+			if dataFilePath !='':
+				profileSourceData = []			
+				profileSourceData = readyProfileSourceData(genome,settings)		
+				actDataFile(genome,settings,dataFilePath,profileSourceData)
+			if resultFilePath !='':
+				statsResultFile(genome,settings,resultFilePath,intersectClusterName,repeatClusterName)
 		else:
-			sys.exit()	
+			if clusterFilePath !='':
+				clusterFile(clusterFilePath,clusterConfigs)
+			elif bedFilePath !='':
+				exonFile(exonDataFilePath,bedFilePath)
+			else:
+				sys.exit()	
 
 	###action end ####
 
