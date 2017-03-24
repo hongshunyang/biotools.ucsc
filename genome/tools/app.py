@@ -589,8 +589,9 @@ def _geneMapSingleFile(genefileabspath):
 	###save all cell.vaule to[[],[],...,[]]
 	print("generated end")	
 	geneFileDataSet[0][chrColumn]='chromosome'
+	geneFileDataSet[0][regionColumn]='region'
 	
-	prefix="map_chr_region_"
+	prefix="_map_chr_region_"
 	resultFilePath = generateResultFilePath(genefileabspath,prefix)		
 	saveDataToCSV([],geneFileDataSet,resultFilePath,',')
 
