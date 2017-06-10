@@ -7,3 +7,6 @@ __pycache__/
 *.csv
 *.pdf
 genome/tools/gmail.download.ini
+.DS_Store
+genome/data/
+genome/result/
