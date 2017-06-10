@@ -1,0 +1,4 @@
+## connect to remote database
+docker run --name myadmin -d -e PMA_HOST=genome-mysql.soe.ucsc.edu -p 8080:80 phpmyadmin/phpmyadmin
+## localhost:8080
+## username:genome

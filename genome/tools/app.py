@@ -73,9 +73,14 @@ def usage():
 	print('%s mark repclass,repfamily(sine,line,ltr,dna) %s' % ('-'*20,'-'*20))
 	print('对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录)检索远端数据库并标记位点的repClass,repFamily(生成结果文件csv位于result目录)')
 	print('-d,--data:dir or file,data files that needs to be dealed ')
-	print('./app.py -s settings.ini -g GRCm38 -d ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx')
-	print('./app.py -s settings.ini -g GRCm38 -d ../data/09102016/')
-	
+	print('./app.py -s settings.RepeatMasker.ini -g GRCm38 -d ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx')
+	print('./app.py -s settings.RepeatMasker.ini -g GRCm38 -d ../data/09102016/')
+
+	print('%s mark repclass,repfamily(sine,line,ltr,dna) %s' % ('-'*20,'-'*20))
+	print('对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录)检索远端数据库并标记位点的strand(生成结果文件csv位于result目录)')
+	print('-d,--data:dir or file,data files that needs to be dealed ')
+	print('./app.py -s settings.strand.ini -g GRCm38 -d ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx')
+	print('./app.py -s settings.strand.ini -g GRCm38 -d ../data/09102016/')	
 	
 	print('%s statistic repfamily count %s' % ('-'*20,'-'*20))
 	print('对已经插入repClass,repFamily(共8列，sine,line,ltr,dna(*2))的结果文件(位于result目录,文件类型.csv)进行统计，每个结果文件包含多少class，多少family生成结果一个文件(.csv)位于tools(GRCm38_RepeatMasker_stats_result.csv)_result目录')
@@ -935,7 +940,8 @@ def actDataFile(genome,settings,dataFilePath,profileSourceData):
 	dbProfile = settings['profile']
 	if (genome=='GRCm38' and dbProfile=='RepeatMasker'):
 		_actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData)
-
+	elif (genome=='GRCm38' and dbProfile=='strand'):
+    		_actDataFile_GRCm38_strand(dataFilePath,profileSourceData)
 
 
 def _actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData):
@@ -955,7 +961,25 @@ def _actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData):
 		_actSingleDataFile_GRCm38_RepeatMasker(datafileabspath,profileSourceData)
 	print("action is end")
 
-		
+def _actDataFile_GRCm38_strand(dataFilePath,profileSourceData):
+    print("acting input data file")
+    if os.path.isdir(dataFilePath):
+        print("data file is a directory:%s" % dataFilePath)
+        for root,dirs,files in os.walk(os.path.abspath(dataFilePath)):
+            for file in files:
+                filename,fileext=os.path.splitext(file)
+                if fileext=='.xlsx':
+                    datafileabspath = root+os.sep+file					
+                    _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData)
+    elif os.path.isfile(dataFilePath):
+        print("data file is a single file:%s" % dataFilePath)
+        datafileabspath = os.path.abspath(dataFilePath)
+        _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData)
+    print("action is end")
+
+def _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData):
+    pass
+
 def _actSingleDataFile_GRCm38_RepeatMasker(datafileabspath,profileSourceData):
 	
 	print("dealing data file :%s" % datafileabspath)
@@ -1073,6 +1097,8 @@ def readyProfileSourceData(genome,settings):
 	dbProfile = settings['profile']
 	if (genome=='GRCm38' and dbProfile=='RepeatMasker'):
 		return _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings)
+	elif (genome=='GRCm38' and dbProfile=='strand'):
+    	        return  _readyProfileSourceData_GRCm38_strand(genome,settings)
 
 
 def _loadProfileSourceData_GRCm38_RepeatMasker(genome,settings):
@@ -1098,7 +1124,30 @@ def _loadProfileSourceData_GRCm38_RepeatMasker(genome,settings):
 	
 	print("loaded successfully")
 	return profileSourceData
-		
+
+def _loadProfileSourceData_GRCm38_strand(genome,settings):
+    print("loading profile source data")
+    dbProfile = settings['profile']	
+    profileSourceDataPath = setProfileSourceDataPath(genome,dbProfile)
+	
+    if not os.path.exists(profileSourceDataPath):
+        print("connected to remote mysql database online")
+        dbType = settings['type']
+        dbConfig = {
+			'user':settings['user'],
+			'host':settings['host'],
+			'database':settings['database'],
+			'raise_on_warnings':True
+		}
+        dbConn = dbConnector(dbType,dbConfig)
+        querySourceData(genome,dbProfile,dbConn)##save to  profileSourceDataPath
+        dbConn.close()
+	
+    profileSourceData = getDataFromCSV(True,',',profileSourceDataPath)
+	
+    print("loaded successfully")
+        
+    return profileSourceData		
 	
 
 def _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings):
@@ -1116,13 +1165,31 @@ def _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings):
 		profileSourceDataDictionaryByCHR[chrKey].append(row)
 	print("converted successfully")
 	return profileSourceDataDictionaryByCHR		
-				
+
+def _readyProfileSourceData_GRCm38_strand(genome,settings):
+    print("converting profile source data to dict")
+    profileSourceData = _loadProfileSourceData_GRCm38_strand(genome,settings)
+		
+    profileSourceDataDictionaryByCHR = {}
+	#profile csv file : column : ['genoName','genoStart','genoEnd','repClass','repFamily']
+    for row in profileSourceData:
+        chrKey=str(row[0])
+        if chrKey not in list(profileSourceDataDictionaryByCHR.keys()):
+            profileSourceDataDictionaryByCHR[chrKey] = []
+        
+        profileSourceDataDictionaryByCHR[chrKey].append(row)
+    
+    print("converted successfully")
+    return profileSourceDataDictionaryByCHR					
 
 def querySourceData(genome,dbProfile,dbConn):
 	print("current source data about genome is :%s,profile is :%s" % (genome,dbProfile))
 	if (genome=='GRCm38' and dbProfile=='RepeatMasker'):
 		profileSourceDataPath = setProfileSourceDataPath(genome,dbProfile)
-		_query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath)	
+		_query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath)
+	elif (genome=='GRCm38' and dbProfile=='strand'):	
+		profileSourceDataPath = setProfileSourceDataPath(genome,dbProfile)
+		_query_source_data_GRCm38_strand(dbConn,profileSourceDataPath)
 
 
 def _query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath):
@@ -1141,6 +1208,28 @@ def _query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath):
 
 	for (genoName,genoStart,genoEnd,repClass,repFamily) in cursor:
 		data.append([genoName,genoStart,genoEnd,repClass,repFamily])			
+	
+	print("query successfully")		
+	saveDataToCSV(column,data,profileSourceDataPath)		
+	cursor.close()
+	
+
+def _query_source_data_GRCm38_strand(dbConn,profileSourceDataPath):
+	
+	print("querying source data online")
+	cursor = dbConn.cursor()
+	
+	column=['chrom','strand','txStart','txEnd']
+	
+	##repClass-mode
+	query = "select chrom,strand,txStart,txEnd from geneid where 1 "
+
+	cursor.execute(query)
+
+	data = []
+
+	for (chrom,strand,txStart,txEnd) in cursor:
+		data.append([chrom,strand,txStart,txEnd])			
 	
 	print("query successfully")		
 	saveDataToCSV(column,data,profileSourceDataPath)		
