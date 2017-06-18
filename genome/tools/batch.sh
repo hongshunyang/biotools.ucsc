@@ -1,30 +1,34 @@
 #!/bin/bash
 
-./app.py -c ../data/02122017-1 -t 2500 -o 25 -e 3 -f 1
-./app.py -c ../data/02122017-2 -t 2500 -o 25 -e 3 -f 5
-./app.py -c ../data/02122017-3 -t 2500 -o 25 -e 5 -f 1
-./app.py -c ../data/02122017-4 -t 2500 -o 25 -e 5 -f 5
-./app.py -c ../data/02122017-5 -t 2500 -o 20 -e 3 -f 1
-./app.py -c ../data/02122017-6 -t 2500 -o 20 -e 3 -f 5
-./app.py -c ../data/02122017-7 -t 2500 -o 20 -e 5 -f 1
-./app.py -c ../data/02122017-8 -t 2500 -o 20 -e 5 -f 5
+## for i in `seq 2 16`;do cp -a 20170611-1 20170611-$i;done
+## for i in `seq 2 16`;do rm -rf 20170611-$i;done
 
-./app.py -c ../data/02122017-9 -t 500 -o 25 -e 3 -f 1
-./app.py -c ../data/02122017-10 -t 500 -o 25 -e 3 -f 5
-./app.py -c ../data/02122017-11 -t 500 -o 25 -e 5 -f 1
-./app.py -c ../data/02122017-12 -t 500 -o 25 -e 5 -f 5
-./app.py -c ../data/02122017-13 -t 500 -o 20 -e 3 -f 1
-./app.py -c ../data/02122017-14 -t 500 -o 20 -e 3 -f 5
-./app.py -c ../data/02122017-15 -t 500 -o 20 -e 5 -f 1
-./app.py -c ../data/02122017-16 -t 500 -o 20 -e 5 -f 5
+./app.py -c ../data/20170611-1 -t 2500 -o 25 -e 3 -f 1
+./app.py -c ../data/20170611-2 -t 2500 -o 25 -e 3 -f 5
+./app.py -c ../data/20170611-3 -t 2500 -o 25 -e 5 -f 1
+./app.py -c ../data/20170611-4 -t 2500 -o 25 -e 5 -f 5
 
+./app.py -c ../data/20170611-5 -t 2500 -o 20 -e 3 -f 1
+./app.py -c ../data/20170611-6 -t 2500 -o 20 -e 3 -f 5
+./app.py -c ../data/20170611-7 -t 2500 -o 20 -e 5 -f 1
+./app.py -c ../data/20170611-8 -t 2500 -o 20 -e 5 -f 5
 
-./app.py -c ../data/02122017-17 -t 100 -o 20 -e 3 -f 1
-./app.py -c ../data/02122017-18 -t 100 -o 20 -e 5 -f 1
-./app.py -c ../data/02122017-19 -t 100 -o 20 -e 8 -f 1
-./app.py -c ../data/02122017-20 -t 100 -o 20 -e 10 -f 1
-./app.py -c ../data/02122017-21 -t 50 -o 20 -e 3 -f 1
-./app.py -c ../data/02122017-22 -t 50 -o 20 -e 5 -f 1
-./app.py -c ../data/02122017-23 -t 50 -o 20 -e 10 -f 1
-./app.py -c ../data/02122017-24 -t 20 -o 20 -e 3 -f 1
-./app.py -c ../data/02122017-25 -t 20 -o 20 -e 5 -f 1
+./app.py -c ../data/20170611-9 -t 500 -o 25 -e 3 -f 1
+./app.py -c ../data/20170611-10 -t 500 -o 25 -e 3 -f 5
+./app.py -c ../data/20170611-11 -t 500 -o 25 -e 5 -f 1
+./app.py -c ../data/20170611-12 -t 500 -o 25 -e 5 -f 5
+
+./app.py -c ../data/20170611-13 -t 500 -o 20 -e 3 -f 1
+./app.py -c ../data/20170611-14 -t 500 -o 20 -e 3 -f 5
+./app.py -c ../data/20170611-15 -t 500 -o 20 -e 5 -f 1
+./app.py -c ../data/20170611-16 -t 500 -o 20 -e 5 -f 5
+
+./app.py -c ../data/20170611-17 -t 100 -o 20 -e 3 -f 1
+./app.py -c ../data/20170611-18 -t 100 -o 20 -e 5 -f 1
+./app.py -c ../data/20170611-19 -t 100 -o 20 -e 8 -f 1
+./app.py -c ../data/20170611-20 -t 100 -o 20 -e 10 -f 1
+./app.py -c ../data/20170611-21 -t 50 -o 20 -e 3 -f 1
+./app.py -c ../data/20170611-22 -t 50 -o 20 -e 5 -f 1
+./app.py -c ../data/20170611-23 -t 50 -o 20 -e 10 -f 1
+./app.py -c ../data/20170611-24 -t 20 -o 20 -e 3 -f 1
+./app.py -c ../data/20170611-25 -t 20 -o 20 -e 5 -f 1

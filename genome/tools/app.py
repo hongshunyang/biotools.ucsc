@@ -147,7 +147,7 @@ def saveDataToCSV(title,data,filePath,fmt=''):
 	file_handle = open(filePath,'w')
 	
 	if fmt=='':
-		csv_writer = csv.writer(file_handle,delimiter=' ')##delimiter=' ',
+		csv_writer = csv.writer(file_handle,delimiter=',')##delimiter=' ',
 	else:
 		csv_writer = csv.writer(file_handle,delimiter=fmt)##delimiter=' ',
 	
@@ -941,7 +941,7 @@ def actDataFile(genome,settings,dataFilePath,profileSourceData):
 	if (genome=='GRCm38' and dbProfile=='RepeatMasker'):
 		_actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData)
 	elif (genome=='GRCm38' and dbProfile=='strand'):
-    		_actDataFile_GRCm38_strand(dataFilePath,profileSourceData)
+		_actDataFile_GRCm38_strand(dataFilePath,profileSourceData)
 
 
 def _actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData):
@@ -978,8 +978,82 @@ def _actDataFile_GRCm38_strand(dataFilePath,profileSourceData):
     print("action is end")
 
 def _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData):
-    pass
+	
+	print("dealing data file :%s" % datafileabspath)
+	if not os.path.isfile(datafileabspath):
+		print("data file :%s is not exist!" % datafileabspath)
+		sys.exit()
+	#DEAL
+	resultFilePath = generateResultFilePath(datafileabspath)
+	if os.path.isfile(resultFilePath):
+		print("delete old  result file :%s" % resultFilePath)
+		os.remove(resultFilePath)
+	
+	print("loading data file")
+	wb=load_workbook(filename=datafileabspath,data_only=True,read_only=True)##fast mode
+	ws=wb.active
+	
+	dataFileDataSet=[]
+	chromosomeColumn = -1
+	regionColumn=-1
+	
+	##insert column  index defintion
+	i=0
+	
+	print("generating data set from data file")
+	
+	for row in ws.rows:##first row 标题行
+		dataFileRow = []
+		##insert 1 columns 
+		for insertItem in range(0,1): ##repClass-mode ##此处变更时，下面chromosomeColumn，regionColumn 相应变更
+			dataFileRow.insert(0,'')		
+		for cell in row:			
+			dataFileRow.append(cell.value)
+			if(chromosomeColumn==-1 and cell.value.lower()=='chromosome'):
+				chromosomeColumn=i+1   ##repClass-mode ## insertItem : 1 0=>1
+				print("found Chromosome Column index is:%s" % chromosomeColumn)
+			if(regionColumn==-1 and cell.value.lower()=='region'):
+				regionColumn=i+1	##repClass-mode ## insertItem : 1 0=>1
+				print("found Region Column index is:%s" % regionColumn)			
+			i=i+1
 
+		dataFileDataSet.append(dataFileRow)
+		###save all cell.vaule to[[],[],...,[]]
+	print("generated end")		
+	##insert repClass column and repFamily column after region's column
+	##keep insert  order
+	##repClass-mode
+	print("insert title column")
+	
+	dataFileDataSet[0][0]='strand'
+	strandCol = 0
+
+	rowMaxCount = len(dataFileDataSet)		
+	
+	print("calculating")
+	for row in range(1,rowMaxCount):###第0行为标题行		
+		dstChromosome = dataFileDataSet[row][chromosomeColumn] 
+		dstRegion = int(dataFileDataSet[row][regionColumn])
+		## geneName !== ''
+		dstGeneName = dataFileDataSet[row][chromosomeColumn+8]
+		print(dstGeneName) 
+		print("current Chromosome:Region is : %s:%s" %(dstChromosome,dstRegion))
+		chrKey = 'chr'+str(dstChromosome)
+		if chrKey in list(profileSourceData.keys()):
+			## ['chrom','txStart','txEnd','strand']
+			## only search one time
+			for sourceItem in profileSourceData[chrKey]:###[[],[],...,[]]
+				if (dstRegion>=int(sourceItem[1]) and dstRegion<=int(sourceItem[2])):
+					strandVal = sourceItem[3]
+					if strandVal in ['-','+']:
+						print("found target :%s" %sourceItem)
+						dataFileDataSet[row][strandCol]=strandVal
+						break
+			
+				
+	print("calculated end")	
+	saveDataToCSV([],dataFileDataSet,resultFilePath)					
+	
 def _actSingleDataFile_GRCm38_RepeatMasker(datafileabspath,profileSourceData):
 	
 	print("dealing data file :%s" % datafileabspath)
@@ -1098,7 +1172,7 @@ def readyProfileSourceData(genome,settings):
 	if (genome=='GRCm38' and dbProfile=='RepeatMasker'):
 		return _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings)
 	elif (genome=='GRCm38' and dbProfile=='strand'):
-    	        return  _readyProfileSourceData_GRCm38_strand(genome,settings)
+		return  _readyProfileSourceData_GRCm38_strand(genome,settings)
 
 
 def _loadProfileSourceData_GRCm38_RepeatMasker(genome,settings):
@@ -1172,6 +1246,7 @@ def _readyProfileSourceData_GRCm38_strand(genome,settings):
 		
     profileSourceDataDictionaryByCHR = {}
 	#profile csv file : column : ['genoName','genoStart','genoEnd','repClass','repFamily']
+	## ['chrom','strand','txStart','txEnd']
     for row in profileSourceData:
         chrKey=str(row[0])
         if chrKey not in list(profileSourceDataDictionaryByCHR.keys()):
@@ -1210,6 +1285,7 @@ def _query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath):
 		data.append([genoName,genoStart,genoEnd,repClass,repFamily])			
 	
 	print("query successfully")		
+	## todo ,
 	saveDataToCSV(column,data,profileSourceDataPath)		
 	cursor.close()
 	
@@ -1218,21 +1294,43 @@ def _query_source_data_GRCm38_strand(dbConn,profileSourceDataPath):
 	
 	print("querying source data online")
 	cursor = dbConn.cursor()
-	
-	column=['chrom','strand','txStart','txEnd']
-	
-	##repClass-mode
-	query = "select chrom,strand,txStart,txEnd from geneid where 1 "
+	## todo txStart,txEnd 和genoStart,genoEnd 是否相等
 
-	cursor.execute(query)
+	##### chr table
+	# 此些表加入会出错
+	## in fact : _est,_intronEst,_mrna
+	## mgcFullMrna,orfeomeMrna
+	## nestedRepeats
+	#g=list(range(1,20))+['X','Y']
+	#column=['tName','tStart','tEnd','strand']
+	#tables=[('chr'+str(x)+'_est') for x in g]+[('chr'+str(x)+'_mrna') for x in g]+['mgcFullMrna','orfeomeMrna']
+	########################################
+	#[('chr'+str(x)+'_intronEst') for x in g]
 
 	data = []
+	#for tb in tables:	
+		###
+		#################
+	#	query = "select tName,tStart,tEnd,strand from %s where 1 " % tb
+	#	cursor.execute(query)
 
-	for (chrom,strand,txStart,txEnd) in cursor:
-		data.append([chrom,strand,txStart,txEnd])			
-	
+	#	for (chrom,txStart,txEnd,strand) in cursor:
+	#		data.append([chrom,txStart,txEnd,strand])			
+
+	### geneName
+	column=['chrom','txStart','txEnd','strand']
+	## genscan,knownGeneOld8,wgEncodeGencode2wayConsPseudoVM11,wgEncodeGencode2wayConsPseudoVM9,wgEncodeGencodeBasicVM9
+	## wgEncodeGencodeCompVM11,wgEncodeGencodeCompVM9,wgEncodeGencodePolyaVM11,wgEncodeGencodePolyaVM9
+	## wgEncodeGencodePseudoGeneVM11,wgEncodeGencodePseudoGeneVM9
+	tables_gene=['augustusGene','ccdsGene','geneid','knownGene','mgcGenes','orfeomeGenes','refGene','sgpGene','wgEncodeGencodePseudoGeneVM11','xenoRefGene','wgEncodeGencodeBasicVM11','genscan','knownGeneOld8','wgEncodeGencode2wayConsPseudoVM11','wgEncodeGencodeCompVM11','wgEncodeGencodePolyaVM11']
+	for tb_g in tables_gene:
+		query = "select chrom,txStart,txEnd,strand from %s where 1 " % tb_g
+		cursor.execute(query)
+		for (chrom,txStart,txEnd,strand) in cursor:
+			data.append([chrom,txStart,txEnd,strand])
+
 	print("query successfully")		
-	saveDataToCSV(column,data,profileSourceDataPath)		
+	saveDataToCSV(column,data,profileSourceDataPath,',')		
 	cursor.close()
 	
 
