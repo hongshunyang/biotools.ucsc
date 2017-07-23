@@ -57,6 +57,18 @@ chr1    4807892 4807928 +       uc007afg.1      UTR     UTR5
 chr1    4807928 4807982 +       uc007afg.1      CDS     Exon 1
 chr1    4807982 4808454 +       uc007afg.1      INTRON  Intron 1
 
+8、
+当根据参数对样本进行cluster分类时，所涉及的bayes公式如下
+关于bayes 公式
+A:表示发生突变的事件
+B:表示先验样本（也就是指定好threshold，count，coverage，frequence所生成的cluster 样本）
+P(B_k):表示第k个先验样本的所占总有效样本的份额
+P(A|B_k):表示A事件在第k个样本发生的概率
+P(A):表示全概率公式值
+P(A)=SUM[ P(A|B_k) * P(B_k) ],k=1,2,...n
+P(B_k|A):表示第k个先验样本发生A事件的概率，也就是那个cluster发生突变的可能性有多大
+p(B_k|A)=P(A|B_k)*P(B_k) / P(A)
+
 """
 
 APP_TOOLS_DIRNAME = 'tools'
