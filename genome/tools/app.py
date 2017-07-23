@@ -651,13 +651,22 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 	##ws=wb.active
 
 	clusterFileDataSet=[]
-	clusterColumn=0
+	
 	chromosomeColumn = -1
 	regionColumn=-1
 	countColumn=-1
 	coverageColumn = -1
 	frequencyColumn = -1
-		
+
+	## insert columns index is column index
+	insertColumns={'clusterColumn':{'index':0,'name':'ClusterName'},
+					'paColumn':{'index':1,'name':'P(A)'},
+					'pbColumn':{'index':2,'name':'P(B)'},
+					'pabColumn':{'index':3,'name':'P(A|B)'},
+					'pbaColumn':{'index':4,'name':'P(B|A)'}
+				  }
+	insertNum=len(insertColumns.keys())
+
 	i=0	
 	print("generating data set from cluster file")
 	
@@ -669,24 +678,27 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 		ws=wb.active	
 		for row in ws.rows:##first row 标题行
 			clusterFileRow = []
-			for insertItem in range(0,1):
-				clusterFileRow.insert(clusterColumn,'')		
+			
+			for c in insertColumns.keys():
+				clusterFileRow.insert(insertColumns[c]['index'],'')
+			#for insertItem in range(0,1):
+			#	clusterFileRow.insert(insertColumns['clusterColumn']['index'],'')		
 			for cell in row:			
 				clusterFileRow.append(cell.value)
 				if(chromosomeColumn==-1 and cell.value.lower()=='chromosome'):
-					chromosomeColumn=i+1   ## insertItem : 1 0=>1
+					chromosomeColumn=i+insertNum   ## insertItem : 1 0=>1
 					print('chromosomeColumn:%s'% chromosomeColumn)
 				if(regionColumn==-1 and cell.value.lower()=='region'):
-					regionColumn=i+1
+					regionColumn=i+insertNum
 					print('regionColumn:%s'% regionColumn)
 				if(countColumn==-1 and cell.value.lower()=='count'):
-					countColumn=i+1
+					countColumn=i+insertNum
 					print('countColumn:%s'% countColumn)	
 				if(coverageColumn==-1 and cell.value.lower()=='coverage'):
-					coverageColumn=i+1
+					coverageColumn=i+insertNum
 					print('coverageColumn:%s'% coverageColumn)	
 				if(frequencyColumn==-1 and cell.value.lower()=='frequency'):
-					frequencyColumn=i+1
+					frequencyColumn=i+insertNum
 					print('frequencyColumn:%s'% frequencyColumn)	
 				i=i+1
 			clusterFileDataSet.append(clusterFileRow)
@@ -697,27 +709,33 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 		clusterFileDataSetOrigTitleRow = clusterFileDataSetOrig[0]
 		for col in clusterFileDataSetOrigTitleRow:
 			if(chromosomeColumn==-1 and col.lower()=='chromosome'):
-				chromosomeColumn=i+1   ## insertItem : 1 0=>1
+				chromosomeColumn=i+insertNum   ## insertItem : 1 0=>1
 				print('chromosomeColumn:%s'% chromosomeColumn)
 			if(regionColumn==-1 and col.lower()=='region'):
-				regionColumn=i+1
+				regionColumn=i+insertNum
 				print('regionColumn:%s'% regionColumn)
 			if(countColumn==-1 and col.lower=='count'):
-				countColumn=i+1
+				countColumn=i+insertNum
 				print('countColumn:%s'% countColumn)	
 			if(coverageColumn==-1 and col.lower()=='coverage'):
-				coverageColumn=i+1	
+				coverageColumn=i+insertNum	
 				print('coverageColumn:%s'% coverageColumn)
 			if(frequencyColumn==-1 and col.lower()=='frequency'):
-				frequencyColumn=i+1	
+				frequencyColumn=i+insertNum	
 				print('frequencyColumn:%s'% frequencyColumn)
 			i+=1
-		clusterFileDataSetOrigTitleRow.insert(clusterColumn,'')
+		#clusterFileDataSetOrigTitleRow.insert(insertColumns['clusterColumn']['index'],'')
+		for c in insertColumns.keys():
+			clusterFileDataSetOrigTitleRow.insert(insertColumns[c]['index'],'')
+		
 		clusterFileDataSet.append(clusterFileDataSetOrigTitleRow)			
 		for row in range(1,len(clusterFileDataSetOrig)):##第2行数据开始，第1行为标题
 			clusterFileRow = []
 			#for insertItem in range(0,1):
-			clusterFileDataSetOrig[row].insert(clusterColumn,'')
+			#clusterFileDataSetOrig[row].insert(insertColumns['clusterColumn']['index'],'')
+			for c in insertColumns.keys():
+				clusterFileDataSetOrig[row].insert(insertColumns[c]['index'],'')
+
 			for col in range(0,len(clusterFileDataSetOrig[row])):
 				if col==regionColumn:
 					colValue=int(clusterFileDataSetOrig[row][col])
@@ -737,8 +755,9 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 	print("generated end")
 	rowMaxCount = len(clusterFileDataSet)		
 	
-	clusterFileDataSet[0][clusterColumn]='ClusterName'
-	
+	for c in insertColumns.keys():
+		clusterFileDataSet[0][insertColumns[c]['index']]=insertColumns[c]['name']
+
 	print("calculating")
 	
 	##filter coverage,frequency col
@@ -817,7 +836,7 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 	for chr in 	resultClusterDicts.keys():
 		for clsName in resultClusterDicts[chr].keys():
 			for row in resultClusterDicts[chr][clsName]:				
-				row[clusterColumn]=clsName
+				row[insertColumns['clusterColumn']['index']]=clsName
 				clusteredResult.append(row)
 	
 	
@@ -825,7 +844,7 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 	for row in range(1,rowMaxCount):
 		for rowR in clusteredResult:
 			if (rowR[chromosomeColumn]==clusterFileDataSet[row][chromosomeColumn]) and (rowR[regionColumn]==clusterFileDataSet[row][regionColumn]):
-				clusterFileDataSet[row][clusterColumn]=rowR[clusterColumn]
+				clusterFileDataSet[row][insertColumns['clusterColumn']['index']]=rowR[insertColumns['clusterColumn']['index']]
 				break
 
 	##
