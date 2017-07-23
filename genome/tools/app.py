@@ -76,12 +76,18 @@ def usage():
 	print('./app.py -s settings.RepeatMasker.ini -g GRCm38 -d ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx')
 	print('./app.py -s settings.RepeatMasker.ini -g GRCm38 -d ../data/09102016/')
 
-	print('%s mark repclass,repfamily(sine,line,ltr,dna) %s' % ('-'*20,'-'*20))
+	print('%s mark strand %s' % ('-'*20,'-'*20))
 	print('对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录)检索远端数据库并标记位点的strand(生成结果文件csv位于result目录)')
 	print('-d,--data:dir or file,data files that needs to be dealed ')
 	print('./app.py -s settings.strand.ini -g GRCm38 -d ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx')
 	print('./app.py -s settings.strand.ini -g GRCm38 -d ../data/09102016/')	
-	
+
+	print('%s mark snp142Common %s' % ('-'*20,'-'*20))
+	print('对原始文件(必须包含chromosome,region列,文件类型.xlsx,位于data目录)检索远端数据库并标记位点的snp142Common(生成结果文件csv位于result目录)')
+	print('-d,--data:dir or file,data files that needs to be dealed ')
+	print('./app.py -s settings.snp142Common.ini -g GRCm38 -d ../data/20170701/WT2.xlsx')
+	print('./app.py -s settings.snp142Common.ini -g GRCm38 -d ../data/20170701/')	
+
 	print('%s statistic repfamily count %s' % ('-'*20,'-'*20))
 	print('对已经插入repClass,repFamily(共8列，sine,line,ltr,dna(*2))的结果文件(位于result目录,文件类型.csv)进行统计，每个结果文件包含多少class，多少family生成结果一个文件(.csv)位于tools(GRCm38_RepeatMasker_stats_result.csv)_result目录')
 	print('默认统计每一个文件中每一个repfamily有出现多少次')
@@ -942,7 +948,8 @@ def actDataFile(genome,settings,dataFilePath,profileSourceData):
 		_actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData)
 	elif (genome=='GRCm38' and dbProfile=='strand'):
 		_actDataFile_GRCm38_strand(dataFilePath,profileSourceData)
-
+	elif (genome=='GRCm38' and dbProfile=='snp142Common'):
+    		_actDataFile_GRCm38_snp142Common(dataFilePath,profileSourceData)
 
 def _actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData):
 	print("acting input data file")
@@ -975,6 +982,22 @@ def _actDataFile_GRCm38_strand(dataFilePath,profileSourceData):
         print("data file is a single file:%s" % dataFilePath)
         datafileabspath = os.path.abspath(dataFilePath)
         _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData)
+    print("action is end")
+
+def _actDataFile_GRCm38_snp142Common(dataFilePath,profileSourceData):
+    print("acting input data file")
+    if os.path.isdir(dataFilePath):
+        print("data file is a directory:%s" % dataFilePath)
+        for root,dirs,files in os.walk(os.path.abspath(dataFilePath)):
+            for file in files:
+                filename,fileext=os.path.splitext(file)
+                if fileext=='.xlsx':
+                    datafileabspath = root+os.sep+file					
+                    _actSingleDataFile_GRCm38_snp142Common(datafileabspath,profileSourceData)
+    elif os.path.isfile(dataFilePath):
+        print("data file is a single file:%s" % dataFilePath)
+        datafileabspath = os.path.abspath(dataFilePath)
+        _actSingleDataFile_GRCm38_snp142Common(datafileabspath,profileSourceData)
     print("action is end")
 
 def _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData):
@@ -1053,7 +1076,85 @@ def _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData):
 				
 	print("calculated end")	
 	saveDataToCSV([],dataFileDataSet,resultFilePath)					
+
+
+def _actSingleDataFile_GRCm38_snp142Common(datafileabspath,profileSourceData):
 	
+	print("dealing data file :%s" % datafileabspath)
+	if not os.path.isfile(datafileabspath):
+		print("data file :%s is not exist!" % datafileabspath)
+		sys.exit()
+	#DEAL
+	resultFilePath = generateResultFilePath(datafileabspath)
+	if os.path.isfile(resultFilePath):
+		print("delete old  result file :%s" % resultFilePath)
+		os.remove(resultFilePath)
+	
+	print("loading data file")
+	wb=load_workbook(filename=datafileabspath,data_only=True,read_only=True)##fast mode
+	ws=wb.active
+	
+	dataFileDataSet=[]
+	chromosomeColumn = -1
+	regionColumn=-1
+	
+	##insert column  index defintion
+	i=0
+	
+	print("generating data set from data file")
+	
+	for row in ws.rows:##first row 标题行
+		dataFileRow = []
+		##insert 1 columns 
+		for insertItem in range(0,1): ##repClass-mode ##此处变更时，下面chromosomeColumn，regionColumn 相应变更
+			dataFileRow.insert(0,'')		
+		for cell in row:			
+			dataFileRow.append(cell.value)
+			if(chromosomeColumn==-1 and cell.value.lower()=='chromosome'):
+				chromosomeColumn=i+1   ##repClass-mode ## insertItem : 1 0=>1
+				print("found Chromosome Column index is:%s" % chromosomeColumn)
+			if(regionColumn==-1 and cell.value.lower()=='region'):
+				regionColumn=i+1	##repClass-mode ## insertItem : 1 0=>1
+				print("found Region Column index is:%s" % regionColumn)			
+			i=i+1
+
+		dataFileDataSet.append(dataFileRow)
+		###save all cell.vaule to[[],[],...,[]]
+	print("generated end")		
+	##insert repClass column and repFamily column after region's column
+	##keep insert  order
+	##repClass-mode
+	print("insert title column")
+	
+	dataFileDataSet[0][0]='snp142Common'
+	snp142CommonCol = 0
+
+	rowMaxCount = len(dataFileDataSet)		
+	
+	print("calculating")
+	for row in range(1,rowMaxCount):###第0行为标题行		
+		dstChromosome = dataFileDataSet[row][chromosomeColumn] 
+		dstRegion = int(dataFileDataSet[row][regionColumn])
+		## geneName !== ''
+		#dstGeneName = dataFileDataSet[row][chromosomeColumn+8]
+		#print(dstGeneName) 
+		print("current Chromosome:Region is : %s:%s" %(dstChromosome,dstRegion))
+		chrKey = 'chr'+str(dstChromosome)
+		if chrKey in list(profileSourceData.keys()):
+			## ['chrom','chromStart','chromEnd','name']
+			## only search one time
+			for sourceItem in profileSourceData[chrKey]:###[[],[],...,[]]
+				if (dstRegion>=int(sourceItem[1]) and dstRegion<=int(sourceItem[2])):
+					snp142CommonVal = sourceItem[3]
+					if snp142CommonVal != '':
+						print("found target :%s" %sourceItem)
+						dataFileDataSet[row][snp142CommonCol]=snp142CommonVal
+						break
+			
+				
+	print("calculated end")	
+	saveDataToCSV([],dataFileDataSet,resultFilePath)		
+
 def _actSingleDataFile_GRCm38_RepeatMasker(datafileabspath,profileSourceData):
 	
 	print("dealing data file :%s" % datafileabspath)
@@ -1173,7 +1274,8 @@ def readyProfileSourceData(genome,settings):
 		return _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings)
 	elif (genome=='GRCm38' and dbProfile=='strand'):
 		return  _readyProfileSourceData_GRCm38_strand(genome,settings)
-
+	elif (genome=='GRCm38' and dbProfile=='snp142Common'):
+    		return  _readyProfileSourceData_GRCm38_snp142Common(genome,settings)
 
 def _loadProfileSourceData_GRCm38_RepeatMasker(genome,settings):
 	print("loading profile source data")
@@ -1222,7 +1324,31 @@ def _loadProfileSourceData_GRCm38_strand(genome,settings):
     print("loaded successfully")
         
     return profileSourceData		
+
+def _loadProfileSourceData_GRCm38_snp142Common(genome,settings):
+    print("loading profile source data")
+    dbProfile = settings['profile']	
+    profileSourceDataPath = setProfileSourceDataPath(genome,dbProfile)
 	
+    if not os.path.exists(profileSourceDataPath):
+        print("connected to remote mysql database online")
+        dbType = settings['type']
+        dbConfig = {
+			'user':settings['user'],
+			'host':settings['host'],
+			'database':settings['database'],
+			'raise_on_warnings':True
+		}
+        dbConn = dbConnector(dbType,dbConfig)
+        querySourceData(genome,dbProfile,dbConn)##save to  profileSourceDataPath
+        dbConn.close()
+	
+    profileSourceData = getDataFromCSV(True,',',profileSourceDataPath)
+	
+    print("loaded successfully")
+        
+    return profileSourceData	
+
 
 def _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings):
 	print("converting profile source data to dict")
@@ -1240,6 +1366,22 @@ def _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings):
 	print("converted successfully")
 	return profileSourceDataDictionaryByCHR		
 
+def _readyProfileSourceData_GRCm38_snp142Common(genome,settings):
+    print("converting profile source data to dict")
+    profileSourceData = _loadProfileSourceData_GRCm38_snp142Common(genome,settings)
+		
+    profileSourceDataDictionaryByCHR = {}
+	## ['chrom','chromStart','chromEnd','name']
+    for row in profileSourceData:
+        chrKey=str(row[0])
+        if chrKey not in list(profileSourceDataDictionaryByCHR.keys()):
+            profileSourceDataDictionaryByCHR[chrKey] = []
+        
+        profileSourceDataDictionaryByCHR[chrKey].append(row)
+    
+    print("converted successfully")
+    return profileSourceDataDictionaryByCHR					
+
 def _readyProfileSourceData_GRCm38_strand(genome,settings):
     print("converting profile source data to dict")
     profileSourceData = _loadProfileSourceData_GRCm38_strand(genome,settings)
@@ -1255,7 +1397,7 @@ def _readyProfileSourceData_GRCm38_strand(genome,settings):
         profileSourceDataDictionaryByCHR[chrKey].append(row)
     
     print("converted successfully")
-    return profileSourceDataDictionaryByCHR					
+    return profileSourceDataDictionaryByCHR	
 
 def querySourceData(genome,dbProfile,dbConn):
 	print("current source data about genome is :%s,profile is :%s" % (genome,dbProfile))
@@ -1265,7 +1407,9 @@ def querySourceData(genome,dbProfile,dbConn):
 	elif (genome=='GRCm38' and dbProfile=='strand'):	
 		profileSourceDataPath = setProfileSourceDataPath(genome,dbProfile)
 		_query_source_data_GRCm38_strand(dbConn,profileSourceDataPath)
-
+	elif (genome=='GRCm38' and dbProfile=='snp142Common'):	
+		profileSourceDataPath = setProfileSourceDataPath(genome,dbProfile)
+		_query_source_data_GRCm38_snp142Common(dbConn,profileSourceDataPath)
 
 def _query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath):
 	
@@ -1338,6 +1482,34 @@ def _query_source_data_GRCm38_strand(dbConn,profileSourceDataPath):
 
 ###query end####
 
+
+
+def _query_source_data_GRCm38_snp142Common(dbConn,profileSourceDataPath):
+	
+	print("querying source data online")
+	cursor = dbConn.cursor()
+	
+	column=['chrom','chromStart','chromEnd','name']
+	
+	##repClass-mode
+	query = "select chrom,chromStart,chromEnd,name from snp142Common where 1"
+
+	cursor.execute(query)
+
+	data = []
+
+	for (chrom,chromStart,chromEnd,name) in cursor:
+		data.append([chrom,chromStart,chromEnd,name])			
+	
+	print("query successfully")		
+	## todo ,
+	saveDataToCSV(column,data,profileSourceDataPath)		
+	cursor.close()
+	
+
+
+
+###query end####
 
 
 def main():
