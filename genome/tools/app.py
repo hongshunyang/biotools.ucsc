@@ -714,7 +714,7 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 			if(regionColumn==-1 and col.lower()=='region'):
 				regionColumn=i+insertNum
 				print('regionColumn:%s'% regionColumn)
-			if(countColumn==-1 and col.lower=='count'):
+			if(countColumn==-1 and col.lower()=='count'):
 				countColumn=i+insertNum
 				print('countColumn:%s'% countColumn)	
 			if(coverageColumn==-1 and col.lower()=='coverage'):
@@ -787,6 +787,7 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 		filterCoverageFrequencyChromosomeDicts[dstChromosome].append(filterCoverageFrequencyColsData[row])
 		
 	#print(filterCoverageFrequencyChromosomeDicts['1'])
+	sumALLCoverageOfAllValidClsName=0
 	clusteredCount = 0
 	resultClusterDicts={}
 	for k in filterCoverageFrequencyChromosomeDicts.keys():
@@ -825,26 +826,49 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 							clusteredCount+=1
 						for ij in IClusteredGroup:
 							resultClusterDicts[k][clusterName].append(chrDataSets[ij])
+							## sum all valid coverage
+							sumALLCoverageOfAllValidClsName+=int(chrDataSets[ij][coverageColumn])
 							chrDataSetsClusteredIndexList.append(ij)
 							#print(chrDataSets[ij])
 				else:
 					continue
 			
-	##collect all result into list				
+	##collect all result into list
+	print('SUM Coverage Of All Cluster:%s' % sumALLCoverageOfAllValidClsName)				
 	clusteredResult = []
-				
+	pa=0			
 	for chr in 	resultClusterDicts.keys():
 		for clsName in resultClusterDicts[chr].keys():
-			for row in resultClusterDicts[chr][clsName]:				
+			## 得到当前clustername 的所有行
+			sumCoverageOfClsName=0
+			sumCountOfClsName=0
+			lastRowOfClsName=len(resultClusterDicts[chr][clsName])
+			r=0
+			for row in resultClusterDicts[chr][clsName]:
+				r+=1			
+				## == row[0]
+				#print('current cls:%s'%row)
+				sumCoverageOfClsName+=int(row[coverageColumn])
+				sumCountOfClsName+=int(row[countColumn])
+				if r==lastRowOfClsName:
+					row[insertColumns['pbColumn']['index']]=float(sumCoverageOfClsName)/float(sumALLCoverageOfAllValidClsName)	
+					row[insertColumns['pabColumn']['index']]=float(sumCountOfClsName)/float(sumCoverageOfClsName)
+					pa += (float(row[insertColumns['pbColumn']['index']])*float(row[insertColumns['pabColumn']['index']]))	
 				row[insertColumns['clusterColumn']['index']]=clsName
 				clusteredResult.append(row)
-	
 	
 	##from result list into all original data for csv file
 	for row in range(1,rowMaxCount):
 		for rowR in clusteredResult:
 			if (rowR[chromosomeColumn]==clusterFileDataSet[row][chromosomeColumn]) and (rowR[regionColumn]==clusterFileDataSet[row][regionColumn]):
 				clusterFileDataSet[row][insertColumns['clusterColumn']['index']]=rowR[insertColumns['clusterColumn']['index']]
+				pb=clusterFileDataSet[row][insertColumns['pbColumn']['index']]=rowR[insertColumns['pbColumn']['index']]
+				pab=clusterFileDataSet[row][insertColumns['pabColumn']['index']]=rowR[insertColumns['pabColumn']['index']]
+				if clusterFileDataSet[row][insertColumns['pbColumn']['index']] !='':
+					clusterFileDataSet[row][insertColumns['paColumn']['index']]=pa
+
+					clusterFileDataSet[row][insertColumns['pbaColumn']['index']]=(pb*pab)/pa
+					
 				break
 
 	##
