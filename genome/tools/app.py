@@ -109,6 +109,7 @@ def usage():
 	print('-t,--threshold:add a number for region place')
 	print('-o,--coverage:filter value of Coverage column value')
 	print('-f,--frequency:filter value of Frequency column value')
+	print('-y,--bayes:enabled/disabled bayes')
 	print('./app.py -c ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx -e 3 -t 2500 -o 5 -f 5')
 	print('./app.py -c ../data/09102016/ -e 3 -t 2500 -o 5 -f 5')
 	print('划分片段的原则是：根据Region值就近选择！')
@@ -641,6 +642,7 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 	clusterColumn=0
 	chromosomeColumn = -1
 	regionColumn=-1
+	countColumn=-1
 	coverageColumn = -1
 	frequencyColumn = -1
 		
@@ -664,7 +666,10 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 					print('chromosomeColumn:%s'% chromosomeColumn)
 				if(regionColumn==-1 and cell.value.lower()=='region'):
 					regionColumn=i+1
-					print('regionColumn:%s'% regionColumn)	
+					print('regionColumn:%s'% regionColumn)
+				if(countColumn==-1 and cell.value.lower()=='count'):
+					countColumn=i+1
+					print('countColumn:%s'% countColumn)	
 				if(coverageColumn==-1 and cell.value.lower()=='coverage'):
 					coverageColumn=i+1
 					print('coverageColumn:%s'% coverageColumn)	
@@ -684,7 +689,10 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 				print('chromosomeColumn:%s'% chromosomeColumn)
 			if(regionColumn==-1 and col.lower()=='region'):
 				regionColumn=i+1
-				print('regionColumn:%s'% regionColumn)	
+				print('regionColumn:%s'% regionColumn)
+			if(countColumn==-1 and col.lower=='count'):
+				countColumn=i+1
+				print('countColumn:%s'% countColumn)	
 			if(coverageColumn==-1 and col.lower()=='coverage'):
 				coverageColumn=i+1	
 				print('coverageColumn:%s'% coverageColumn)
@@ -700,6 +708,8 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 			clusterFileDataSetOrig[row].insert(clusterColumn,'')
 			for col in range(0,len(clusterFileDataSetOrig[row])):
 				if col==regionColumn:
+					colValue=int(clusterFileDataSetOrig[row][col])
+				elif col==countColumn:
 					colValue=int(clusterFileDataSetOrig[row][col])
 				elif col==coverageColumn:
 					colValue=float(clusterFileDataSetOrig[row][col])
@@ -795,7 +805,7 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 	for chr in 	resultClusterDicts.keys():
 		for clsName in resultClusterDicts[chr].keys():
 			for row in resultClusterDicts[chr][clsName]:				
-				row[0]=clsName
+				row[clusterColumn]=clsName
 				clusteredResult.append(row)
 	
 	
@@ -1515,7 +1525,7 @@ def _query_source_data_GRCm38_snp142Common(dbConn,profileSourceDataPath):
 def main():
 	
 	try:
-		opts,args = getopt.getopt(sys.argv[1:],"hs:g:d:r:c:e:t:o:f:b:x:",["help","setting=","genome=","data=","result=","cluster=","record=","threshold=",'coverage=','frequency=','bed=','exon=',"intersectClusterName=","repeatClusterName=","gene="])
+		opts,args = getopt.getopt(sys.argv[1:],"hs:g:d:r:c:e:t:o:f:y:b:x:",["help","setting=","genome=","data=","result=","cluster=","record=","threshold=",'coverage=','frequency=','bayes=','bed=','exon=',"intersectClusterName=","repeatClusterName=","gene="])
 	except getopt.GetoptError as err:
 		print(err)
 		usage()
@@ -1542,7 +1552,8 @@ def main():
 		'record':'',#3
 		'threshold':'',#2500
 		'coverage':'',#5
-		'frequency':''#5
+		'frequency':'',#5
+		'bayes':0#disabled 1:enabled
 	}
 	##mark cds,5utr,3utr,intron
 	bedFilePath =''
@@ -1577,6 +1588,8 @@ def main():
 			clusterConfigs['coverage']=float(arg)
 		elif opt in ('-f','--frequency'):
 			clusterConfigs['frequency']=float(arg)
+		elif opt in ('-y','--bayes'):
+			clusterConfigs['bayes']=arg
 		elif opt in ('-b','--bed'):
 			bedFilePath = arg
 		elif opt in ('-x','--exon'):
