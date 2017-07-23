@@ -11,3 +11,4 @@ genome/tools/gmail.download.ini
 genome/data/
 genome/result/
 genome/task/
+genome/.vscode
