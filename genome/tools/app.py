@@ -121,7 +121,6 @@ def usage():
 	print('-t,--threshold:add a number for region place')
 	print('-o,--coverage:filter value of Coverage column value')
 	print('-f,--frequency:filter value of Frequency column value')
-	print('-y,--bayes:enabled/disabled bayes')
 	print('./app.py -c ../data/09102016/Medium/WT-4/WT-4\ C\ to\ A\ 5648.xlsx -e 3 -t 2500 -o 5 -f 5')
 	print('./app.py -c ../data/09102016/ -e 3 -t 2500 -o 5 -f 5')
 	print('划分片段的原则是：根据Region值就近选择！')
@@ -1580,7 +1579,7 @@ def _query_source_data_GRCm38_snp142Common(dbConn,profileSourceDataPath):
 def main():
 	
 	try:
-		opts,args = getopt.getopt(sys.argv[1:],"hs:g:d:r:c:e:t:o:f:y:b:x:",["help","setting=","genome=","data=","result=","cluster=","record=","threshold=",'coverage=','frequency=','bayes=','bed=','exon=',"intersectClusterName=","repeatClusterName=","gene="])
+		opts,args = getopt.getopt(sys.argv[1:],"hs:g:d:r:c:e:t:o:f:b:x:",["help","setting=","genome=","data=","result=","cluster=","record=","threshold=",'coverage=','frequency=','bed=','exon=',"intersectClusterName=","repeatClusterName=","gene="])
 	except getopt.GetoptError as err:
 		print(err)
 		usage()
@@ -1608,7 +1607,7 @@ def main():
 		'threshold':'',#2500
 		'coverage':'',#5
 		'frequency':'',#5
-		'bayes':0#disabled 1:enabled
+		'bayes':1#disabled 1:enabled
 	}
 	##mark cds,5utr,3utr,intron
 	bedFilePath =''
@@ -1643,8 +1642,6 @@ def main():
 			clusterConfigs['coverage']=float(arg)
 		elif opt in ('-f','--frequency'):
 			clusterConfigs['frequency']=float(arg)
-		elif opt in ('-y','--bayes'):
-			clusterConfigs['bayes']=arg
 		elif opt in ('-b','--bed'):
 			bedFilePath = arg
 		elif opt in ('-x','--exon'):
