@@ -662,7 +662,9 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 					'paColumn':{'index':1,'name':'P(A)'},
 					'pbColumn':{'index':2,'name':'P(B)'},
 					'pabColumn':{'index':3,'name':'P(A|B)'},
-					'pbaColumn':{'index':4,'name':'P(B|A)'}
+					'pbaColumn':{'index':4,'name':'P(B|A)'},
+					'cfColumn':{'index':5,'name':'Cluster(Frequency)'},
+					'crColumn':{'index':6,'name':'Cluster(Row)'}
 				  }
 	insertNum=len(insertColumns.keys())
 
@@ -841,6 +843,8 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 			## 得到当前clustername 的所有行
 			sumCoverageOfClsName=0
 			sumCountOfClsName=0
+			sumFrequencyOfClsName=0
+			sumRowOfClsName=0
 			lastRowOfClsName=len(resultClusterDicts[chr][clsName])
 			r=0
 			for row in resultClusterDicts[chr][clsName]:
@@ -849,9 +853,15 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 				#print('current cls:%s'%row)
 				sumCoverageOfClsName+=int(row[coverageColumn])
 				sumCountOfClsName+=int(row[countColumn])
+				sumFrequencyOfClsName+=float(row[frequencyColumn])
+				sumRowOfClsName+=1
 				if r==lastRowOfClsName:
 					row[insertColumns['pbColumn']['index']]=float(sumCoverageOfClsName)/float(sumALLCoverageOfAllValidClsName)	
 					row[insertColumns['pabColumn']['index']]=float(sumCountOfClsName)/float(sumCoverageOfClsName)
+					
+					row[insertColumns['cfColumn']['index']]=sumFrequencyOfClsName
+					row[insertColumns['crColumn']['index']]=sumRowOfClsName
+					
 					pa += (float(row[insertColumns['pbColumn']['index']])*float(row[insertColumns['pabColumn']['index']]))	
 				row[insertColumns['clusterColumn']['index']]=clsName
 				clusteredResult.append(row)
@@ -863,6 +873,10 @@ def _clusterSingleFile(clusterfileabspath,clusterConfigs):
 				clusterFileDataSet[row][insertColumns['clusterColumn']['index']]=rowR[insertColumns['clusterColumn']['index']]
 				pb=clusterFileDataSet[row][insertColumns['pbColumn']['index']]=rowR[insertColumns['pbColumn']['index']]
 				pab=clusterFileDataSet[row][insertColumns['pabColumn']['index']]=rowR[insertColumns['pabColumn']['index']]
+
+				clusterFileDataSet[row][insertColumns['cfColumn']['index']]=rowR[insertColumns['cfColumn']['index']]
+				clusterFileDataSet[row][insertColumns['crColumn']['index']]=rowR[insertColumns['crColumn']['index']]
+				
 				if clusterFileDataSet[row][insertColumns['pbColumn']['index']] !='':
 					clusterFileDataSet[row][insertColumns['paColumn']['index']]=pa
 
