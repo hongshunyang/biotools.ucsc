@@ -17,6 +17,12 @@ import operator,itertools
 #http://stackoverflow.com/questions/2387697/best-way-to-convert-csv-data-to-dict
 #http://www.tbk.ren/article/168.html?from=similar
 
+"""
+求15个文件中，每个gene_name的Frequency总和以及位点（行）总数。
+也就是生成新的15个文件，title为：
+gene_name (mus_musculus_ensembl_v80_Genes) SUM(Frequency) Number
+./sum.by.column.py -i ../data/20170727_Gene_SumFrequency/ -g 'gene_name (Mus_musculus_ensembl_v80_Genes)' -f 'Frequency'
+"""
 
 APP_TOOLS_DIRNAME = 'tools'
 APP_TOOLS_DATA_DIRNAME = '_data'
@@ -29,6 +35,7 @@ APP_RESULT_DIRNAME = 'result'
 def usage():
     print('-g:--group,group column')
     print('-f:--follow,follow column')
+    print("求每个gene_name的Frequency总和以及位点（行）总数")
     print("./sum.by.column.py -i ../data/Sum_Frequency12062016/ -g 'gene_name (mus_musculus_ensembl_v80_Genes)' -f 'Frequency'")
     print("./sum.by.column.py -i ../data/Sum_Frequency12062016/result_WT-1\ A\ to\ G\ 9257.csv -g 'gene_name (mus_musculus_ensembl_v80_Genes)' -f 'Frequency'")
 

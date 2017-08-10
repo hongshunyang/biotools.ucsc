@@ -1,0 +1,32 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`%` PROCEDURE `update_wt6_num`(IN `maxRow` INT(11))
+    NO SQL
+BEGIN
+
+        DECLARE x  INT DEFAULT 0;   -- 计数器
+        DECLARE chrregion TEXT DEFAULT ''; 
+        DECLARE num INT DEFAULT 0;
+
+        DECLARE cursor1 
+        CURSOR FOR
+        SELECT t1.chrregion 
+        FROM tbl_distinct_chr_region t1;   
+
+        OPEN cursor1;
+
+        my_loop: 
+        LOOP
+            SET x = x+1;
+            
+            IF x>maxRow THEN 
+                LEAVE my_loop; 
+            ELSE 
+                FETCH NEXT FROM cursor1 INTO chrregion;
+                SET num = 0;
+                SELECT t6.num into num FROM tbl_wt6_chr_region t6 WHERE t6.chrregion=chrregion;
+                UPDATE tbl_distinct_chr_region t6 SET t6.WT6 = num WHERE t6.chrregion=chrregion;
+            END IF;
+        END LOOP;
+
+        END$$
+DELIMITER ;

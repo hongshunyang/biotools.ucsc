@@ -1,0 +1,271 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+APP_DATA_DIRNAME	../genome/tools/app.py	/^APP_DATA_DIRNAME = 'data'$/;"	kind:variable	line:77
+APP_DATA_DIRNAME	../genome/tools/idiographica.download.py	/^APP_DATA_DIRNAME = 'data'$/;"	kind:variable	line:28
+APP_DATA_DIRNAME	../genome/tools/idiographica.py	/^APP_DATA_DIRNAME = 'data'$/;"	kind:variable	line:56
+APP_DATA_DIRNAME	../genome/tools/sum.by.column.py	/^APP_DATA_DIRNAME = 'data'$/;"	kind:variable	line:30
+APP_RESULT_DIRNAME	../genome/tools/app.py	/^APP_RESULT_DIRNAME = 'result'$/;"	kind:variable	line:78
+APP_RESULT_DIRNAME	../genome/tools/idiographica.download.py	/^APP_RESULT_DIRNAME = 'result'$/;"	kind:variable	line:29
+APP_RESULT_DIRNAME	../genome/tools/idiographica.py	/^APP_RESULT_DIRNAME = 'result'$/;"	kind:variable	line:57
+APP_RESULT_DIRNAME	../genome/tools/sum.by.column.py	/^APP_RESULT_DIRNAME = 'result'$/;"	kind:variable	line:31
+APP_TOOLS_DATA_DIRNAME	../genome/tools/app.py	/^APP_TOOLS_DATA_DIRNAME = '_data'$/;"	kind:variable	line:75
+APP_TOOLS_DATA_DIRNAME	../genome/tools/idiographica.download.py	/^APP_TOOLS_DATA_DIRNAME = '_data'$/;"	kind:variable	line:26
+APP_TOOLS_DATA_DIRNAME	../genome/tools/idiographica.py	/^APP_TOOLS_DATA_DIRNAME = '_data'$/;"	kind:variable	line:54
+APP_TOOLS_DATA_DIRNAME	../genome/tools/sum.by.column.py	/^APP_TOOLS_DATA_DIRNAME = '_data'$/;"	kind:variable	line:28
+APP_TOOLS_DIRNAME	../genome/tools/app.py	/^APP_TOOLS_DIRNAME = 'tools'$/;"	kind:variable	line:74
+APP_TOOLS_DIRNAME	../genome/tools/idiographica.download.py	/^APP_TOOLS_DIRNAME = 'tools'$/;"	kind:variable	line:25
+APP_TOOLS_DIRNAME	../genome/tools/idiographica.py	/^APP_TOOLS_DIRNAME = 'tools'$/;"	kind:variable	line:53
+APP_TOOLS_DIRNAME	../genome/tools/sum.by.column.py	/^APP_TOOLS_DIRNAME = 'tools'$/;"	kind:variable	line:27
+APP_TOOLS_IDIO_DIRNAME	../genome/tools/idiographica.download.py	/^APP_TOOLS_IDIO_DIRNAME = 'idiographica'$/;"	kind:variable	line:30
+APP_TOOLS_IDIO_DIRNAME	../genome/tools/idiographica.py	/^APP_TOOLS_IDIO_DIRNAME = 'idiographica'$/;"	kind:variable	line:58
+APP_TOOLS_RESULT_DIRNAME	../genome/tools/app.py	/^APP_TOOLS_RESULT_DIRNAME = '_result'$/;"	kind:variable	line:76
+APP_TOOLS_RESULT_DIRNAME	../genome/tools/idiographica.download.py	/^APP_TOOLS_RESULT_DIRNAME = '_result'$/;"	kind:variable	line:27
+APP_TOOLS_RESULT_DIRNAME	../genome/tools/idiographica.py	/^APP_TOOLS_RESULT_DIRNAME = '_result'$/;"	kind:variable	line:55
+APP_TOOLS_RESULT_DIRNAME	../genome/tools/sum.by.column.py	/^APP_TOOLS_RESULT_DIRNAME = '_result'$/;"	kind:variable	line:29
+Attachment	../genome/tools/gmail/message.py	/^class Attachment:$/;"	kind:class	line:216
+AuthenticationError	../genome/tools/gmail/__init__.py	/^from .exceptions import GmailException, ConnectionError, AuthenticationError$/;"	kind:namespace	line:19
+AuthenticationError	../genome/tools/gmail/exceptions.py	/^class AuthenticationError(GmailException):$/;"	kind:class	line:19
+ConfigParser	../genome/tools/idiographica.download.py	/^import os,sys,ConfigParser,getopt$/;"	kind:namespace	line:11
+ConnectionError	../genome/tools/gmail/__init__.py	/^from .exceptions import GmailException, ConnectionError, AuthenticationError$/;"	kind:namespace	line:19
+ConnectionError	../genome/tools/gmail/exceptions.py	/^class ConnectionError(GmailException):$/;"	kind:class	line:16
+Entrez	../genome/tools/app.py	/^from Bio import Entrez$/;"	kind:namespace	line:17
+GMAIL_IMAP_HOST	../genome/tools/gmail/gmail.py	/^    GMAIL_IMAP_HOST = 'imap.gmail.com'$/;"	kind:variable	line:10
+GMAIL_IMAP_PORT	../genome/tools/gmail/gmail.py	/^    GMAIL_IMAP_PORT = 993$/;"	kind:variable	line:11
+GMAIL_SMTP_HOST	../genome/tools/gmail/gmail.py	/^    GMAIL_SMTP_HOST = "smtp.gmail.com"$/;"	kind:variable	line:15
+GMAIL_SMTP_PORT	../genome/tools/gmail/gmail.py	/^    GMAIL_SMTP_PORT = 587$/;"	kind:variable	line:16
+Gmail	../genome/tools/gmail/__init__.py	/^from .gmail import Gmail$/;"	kind:namespace	line:16
+Gmail	../genome/tools/gmail/gmail.py	/^class Gmail():$/;"	kind:class	line:8
+Gmail	../genome/tools/gmail/utils.py	/^from .gmail import Gmail $/;"	kind:namespace	line:3
+Gmail	../genome/tools/idiographica.download.py	/^from gmail import Gmail$/;"	kind:namespace	line:21
+GmailException	../genome/tools/gmail/__init__.py	/^from .exceptions import GmailException, ConnectionError, AuthenticationError$/;"	kind:namespace	line:19
+GmailException	../genome/tools/gmail/exceptions.py	/^class GmailException(RuntimeError):$/;"	kind:class	line:12
+Mailbox	../genome/tools/gmail/__init__.py	/^from .mailbox import Mailbox $/;"	kind:namespace	line:17
+Mailbox	../genome/tools/gmail/gmail.py	/^from mailbox import Mailbox$/;"	kind:namespace	line:4
+Mailbox	../genome/tools/gmail/mailbox.py	/^class Mailbox():$/;"	kind:class	line:5
+Message	../genome/tools/gmail/__init__.py	/^from .message import Message $/;"	kind:namespace	line:18
+Message	../genome/tools/gmail/mailbox.py	/^from message import Message$/;"	kind:namespace	line:1
+Message	../genome/tools/gmail/message.py	/^class Message():$/;"	kind:class	line:9
+MultipartEncoder	../genome/tools/idiographica.py	/^from requests_toolbelt import MultipartEncoder$/;"	kind:namespace	line:45
+PRINTABLE	../genome/tools/gmail/utf.py	/^PRINTABLE = set(range(0x20, 0x26)) | set(range(0x27, 0x7f))$/;"	kind:variable	line:28
+ParseFlags	../genome/tools/gmail/message.py	/^from imaplib import ParseFlags$/;"	kind:namespace	line:7
+SortedDict	../genome/tools/app.py	/^from sortedcontainers import SortedDict$/;"	kind:namespace	line:15
+Timeout	../genome/tools/gmail/exceptions.py	/^class Timeout(GmailException):$/;"	kind:class	line:22
+Workbook	../genome/tools/app.py	/^from openpyxl import Workbook$/;"	kind:namespace	line:10
+__author__	../genome/tools/gmail/__init__.py	/^__author__ = 'Charlie Guo'$/;"	kind:variable	line:11
+__build__	../genome/tools/gmail/__init__.py	/^__build__ = 0x0001$/;"	kind:variable	line:12
+__copyright__	../genome/tools/gmail/__init__.py	/^__copyright__ = 'Copyright 2013 Charlie Guo'$/;"	kind:variable	line:14
+__init__	../genome/tools/gmail/gmail.py	/^    def __init__(self):$/;"	kind:member	line:18
+__init__	../genome/tools/gmail/mailbox.py	/^    def __init__(self, gmail, name="INBOX"):$/;"	kind:member	line:7
+__init__	../genome/tools/gmail/message.py	/^    def __init__(self, attachment):$/;"	kind:member	line:218
+__init__	../genome/tools/gmail/message.py	/^    def __init__(self, mailbox, uid):$/;"	kind:member	line:12
+__init__.py	../genome/tools/gmail/__init__.py	1;"	kind:file	line:1
+__license__	../genome/tools/gmail/__init__.py	/^__license__ = 'Apache 2.0'$/;"	kind:variable	line:13
+__title__	../genome/tools/gmail/__init__.py	/^__title__ = 'gmail'$/;"	kind:variable	line:9
+__version__	../genome/tools/gmail/__init__.py	/^__version__ = '0.1'$/;"	kind:variable	line:10
+_actDataFile_GRCm38_RepeatMasker	../genome/tools/app.py	/^def _actDataFile_GRCm38_RepeatMasker(dataFilePath,profileSourceData):$/;"	kind:function	line:1036
+_actDataFile_GRCm38_snp142Common	../genome/tools/app.py	/^def _actDataFile_GRCm38_snp142Common(dataFilePath,profileSourceData):$/;"	kind:function	line:1069
+_actDataFile_GRCm38_strand	../genome/tools/app.py	/^def _actDataFile_GRCm38_strand(dataFilePath,profileSourceData):$/;"	kind:function	line:1053
+_actSingleDataFile_GRCm38_RepeatMasker	../genome/tools/app.py	/^def _actSingleDataFile_GRCm38_RepeatMasker(datafileabspath,profileSourceData):$/;"	kind:function	line:1240
+_actSingleDataFile_GRCm38_snp142Common	../genome/tools/app.py	/^def _actSingleDataFile_GRCm38_snp142Common(datafileabspath,profileSourceData):$/;"	kind:function	line:1163
+_actSingleDataFile_GRCm38_strand	../genome/tools/app.py	/^def _actSingleDataFile_GRCm38_strand(datafileabspath,profileSourceData):$/;"	kind:function	line:1085
+_app.py	../genome/tools/_app.py	1;"	kind:file	line:1
+_clusterSingleFile	../genome/tools/app.py	/^def _clusterSingleFile(clusterfileabspath,clusterConfigs):$/;"	kind:function	line:640
+_exonFile	../genome/tools/app.py	/^def _exonFile(exonDataFilePath,bedFilePath):$/;"	kind:function	line:904
+_exonSingleDataFile	../genome/tools/app.py	/^def _exonSingleDataFile(exondatafileabspath,bedFilePath):$/;"	kind:function	line:921
+_genObjDataFromFile	../genome/tools/idiographica.py	/^def _genObjDataFromFile(dataFilePath,idioConfigs):$/;"	kind:function	line:315
+_geneMapSingleFile	../genome/tools/app.py	/^def _geneMapSingleFile(genefileabspath):$/;"	kind:function	line:561
+_getROIDataFromSingleFile	../genome/tools/idiographica.py	/^def _getROIDataFromSingleFile(datafileabspath,idioConfigs):$/;"	kind:function	line:333
+_loadProfileSourceData_GRCm38_RepeatMasker	../genome/tools/app.py	/^def _loadProfileSourceData_GRCm38_RepeatMasker(genome,settings):$/;"	kind:function	line:1362
+_loadProfileSourceData_GRCm38_snp142Common	../genome/tools/app.py	/^def _loadProfileSourceData_GRCm38_snp142Common(genome,settings):$/;"	kind:function	line:1410
+_loadProfileSourceData_GRCm38_strand	../genome/tools/app.py	/^def _loadProfileSourceData_GRCm38_strand(genome,settings):$/;"	kind:function	line:1386
+_mysqlConnector	../genome/tools/app.py	/^def _mysqlConnector(config):$/;"	kind:function	line:289
+_postObjDataFile	../genome/tools/idiographica.py	/^def _postObjDataFile(dataFilePath,formSetting):$/;"	kind:function	line:183
+_query_source_data_GRCm38_RepeatMasker	../genome/tools/app.py	/^def _query_source_data_GRCm38_RepeatMasker(dbConn,profileSourceDataPath):$/;"	kind:function	line:1496
+_query_source_data_GRCm38_snp142Common	../genome/tools/app.py	/^def _query_source_data_GRCm38_snp142Common(dbConn,profileSourceDataPath):$/;"	kind:function	line:1569
+_query_source_data_GRCm38_strand	../genome/tools/app.py	/^def _query_source_data_GRCm38_strand(dbConn,profileSourceDataPath):$/;"	kind:function	line:1519
+_readyProfileSourceData_GRCm38_RepeatMasker	../genome/tools/app.py	/^def _readyProfileSourceData_GRCm38_RepeatMasker(genome,settings):$/;"	kind:function	line:1435
+_readyProfileSourceData_GRCm38_snp142Common	../genome/tools/app.py	/^def _readyProfileSourceData_GRCm38_snp142Common(genome,settings):$/;"	kind:function	line:1451
+_readyProfileSourceData_GRCm38_strand	../genome/tools/app.py	/^def _readyProfileSourceData_GRCm38_strand(genome,settings):$/;"	kind:function	line:1467
+_renameObjDataFile	../genome/tools/idiographica.py	/^def _renameObjDataFile(dataFilePath):$/;"	kind:function	line:265
+_statsResultFile_GRCm38_RepeatMasker	../genome/tools/app.py	/^def _statsResultFile_GRCm38_RepeatMasker(genome,settings,resultFilePath,intersectClusterName,repeatClusterName):$/;"	kind:function	line:315
+_statsSingleResultFile_GRCm38_RepeatMasker	../genome/tools/app.py	/^def _statsSingleResultFile_GRCm38_RepeatMasker(resultfileabspath,intersectClusterName,repeatClusterName):$/;"	kind:function	line:405
+_sumByGroup	../genome/tools/sum.by.column.py	/^def _sumByGroup(sumParams):$/;"	kind:function	line:139
+actDataFile	../genome/tools/app.py	/^def actDataFile(genome,settings,dataFilePath,profileSourceData):$/;"	kind:function	line:1027
+add_label	../genome/tools/gmail/message.py	/^    def add_label(self, label):$/;"	kind:member	line:75
+all_mail	../genome/tools/gmail/gmail.py	/^    def all_mail(self):$/;"	kind:member	line:176
+app.py	../genome/tools/app.py	1;"	kind:file	line:1
+archive	../genome/tools/gmail/message.py	/^    def archive(self):$/;"	kind:member	line:111
+authenticate	../genome/tools/gmail/__init__.py	/^from .utils import login, authenticate$/;"	kind:namespace	line:20
+authenticate	../genome/tools/gmail/gmail.py	/^    def authenticate(self, username, access_token):$/;"	kind:member	line:113
+authenticate	../genome/tools/gmail/utils.py	/^def authenticate(username, access_token):$/;"	kind:function	line:10
+binary_type	../genome/tools/gmail/utf.py	/^binary_type = str$/;"	kind:variable	line:26
+cached_messages	../genome/tools/gmail/mailbox.py	/^    def cached_messages(self):$/;"	kind:member	line:105
+clusterFile	../genome/tools/app.py	/^def clusterFile(clusterFilePath,clusterConfigs):$/;"	kind:function	line:623
+configparser	../genome/tools/_app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+configparser	../genome/tools/app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:6
+configparser	../genome/tools/idiographica.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:41
+configparser	../genome/tools/sum.by.column.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+connect	../genome/tools/gmail/gmail.py	/^    def connect(self, raise_errors=True):$/;"	kind:member	line:33
+connector	../genome/tools/app.py	/^import mysql.connector$/;"	kind:namespace	line:8
+copy	../genome/tools/gmail/gmail.py	/^    def copy(self, uid, to_mailbox, from_mailbox=None):$/;"	kind:member	line:144
+count	../genome/tools/gmail/mailbox.py	/^    def count(self, **kwargs):$/;"	kind:member	line:102
+create_mailbox	../genome/tools/gmail/gmail.py	/^    def create_mailbox(self, mailbox_name):$/;"	kind:member	line:76
+csv	../genome/tools/_app.py	/^import csv$/;"	kind:namespace	line:6
+csv	../genome/tools/app.py	/^import csv,shutil$/;"	kind:namespace	line:13
+csv	../genome/tools/idiographica.download.py	/^import csv$/;"	kind:namespace	line:12
+csv	../genome/tools/idiographica.py	/^import csv,shutil$/;"	kind:namespace	line:42
+csv	../genome/tools/sum.by.column.py	/^import csv$/;"	kind:namespace	line:6
+date	../genome/tools/idiographica.download.py	/^from datetime import datetime, date, time$/;"	kind:namespace	line:19
+date	../genome/tools/idiographica.py	/^from datetime import datetime, date, time$/;"	kind:namespace	line:49
+datetime	../genome/tools/gmail/message.py	/^import datetime$/;"	kind:namespace	line:1
+datetime	../genome/tools/idiographica.download.py	/^from datetime import datetime, date, time$/;"	kind:namespace	line:19
+datetime	../genome/tools/idiographica.py	/^from datetime import datetime, date, time$/;"	kind:namespace	line:49
+dbConnector	../genome/tools/app.py	/^def dbConnector(type,config):$/;"	kind:function	line:280
+decode	../genome/tools/gmail/utf.py	/^def decode(s):$/;"	kind:function	line:60
+decode_header	../genome/tools/gmail/message.py	/^from email.header import decode_header, make_header$/;"	kind:namespace	line:6
+decode_utf7	../genome/tools/gmail/gmail.py	/^from utf import encode as encode_utf7, decode as decode_utf7$/;"	kind:namespace	line:5
+decode_utf7	../genome/tools/gmail/mailbox.py	/^from utf import encode as encode_utf7, decode as decode_utf7$/;"	kind:namespace	line:2
+delete	../genome/tools/gmail/message.py	/^    def delete(self):$/;"	kind:member	line:89
+delete_mailbox	../genome/tools/gmail/gmail.py	/^    def delete_mailbox(self, mailbox_name):$/;"	kind:member	line:85
+download	../genome/tools/idiographica.download.py	/^def download(settings):$/;"	kind:function	line:91
+email	../genome/tools/gmail/message.py	/^import email$/;"	kind:namespace	line:2
+encode	../genome/tools/gmail/utf.py	/^def encode(s):$/;"	kind:function	line:30
+encode_utf7	../genome/tools/gmail/gmail.py	/^from utf import encode as encode_utf7, decode as decode_utf7$/;"	kind:namespace	line:5
+encode_utf7	../genome/tools/gmail/mailbox.py	/^from utf import encode as encode_utf7, decode as decode_utf7$/;"	kind:namespace	line:2
+exceptions.py	../genome/tools/gmail/exceptions.py	1;"	kind:file	line:1
+exonFile	../genome/tools/app.py	/^def exonFile(exonDataFilePath,bedFilePath):$/;"	kind:function	line:901
+extend_result_if_chars_buffered	../genome/tools/gmail/utf.py	/^    def extend_result_if_chars_buffered():$/;"	kind:function	line:41
+external_name	../genome/tools/gmail/mailbox.py	/^    def external_name(self):$/;"	kind:member	line:14
+external_name	../genome/tools/gmail/mailbox.py	/^    def external_name(self, value):$/;"	kind:member	line:20
+fetch	../genome/tools/gmail/message.py	/^    def fetch(self):$/;"	kind:member	line:177
+fetch_mailboxes	../genome/tools/gmail/gmail.py	/^    def fetch_mailboxes(self):$/;"	kind:member	line:52
+fetch_multiple_messages	../genome/tools/gmail/gmail.py	/^    def fetch_multiple_messages(self, messages):$/;"	kind:member	line:149
+fetch_thread	../genome/tools/gmail/message.py	/^    def fetch_thread(self):$/;"	kind:member	line:186
+find	../genome/tools/gmail/gmail.py	/^    def find(self, mailbox_name="[Gmail]\/All Mail", **kwargs):$/;"	kind:member	line:139
+genIdiographicaData	../genome/tools/idiographica.py	/^def genIdiographicaData(roiDataSet,datafileabspath):$/;"	kind:function	line:405
+genObjDataFromFile	../genome/tools/idiographica.py	/^def genObjDataFromFile(dataFilePath,idioConfigs):$/;"	kind:function	line:312
+geneMapData	../genome/tools/app.py	/^def geneMapData(geneFilePath):$/;"	kind:function	line:544
+generateResultFilePath	../genome/tools/_app.py	/^def generateResultFilePath(dataFilePath,prefix=''):$/;"	kind:function	line:46
+generateResultFilePath	../genome/tools/app.py	/^def generateResultFilePath(dataFilePath,prefix=''):$/;"	kind:function	line:183
+generateResultFilePath	../genome/tools/idiographica.py	/^def generateResultFilePath(dataFilePath,prefix=''):$/;"	kind:function	line:149
+generateResultFilePath	../genome/tools/sum.by.column.py	/^def generateResultFilePath(dataFilePath,prefix=''):$/;"	kind:function	line:65
+getDataFromCSV	../genome/tools/app.py	/^def getDataFromCSV(title,spliter,filePath):$/;"	kind:function	line:139
+getDataFromCSV	../genome/tools/idiographica.download.py	/^def getDataFromCSV(title,spliter,filePath):$/;"	kind:function	line:42
+getDataFromCSV	../genome/tools/idiographica.py	/^def getDataFromCSV(title,spliter,filePath):$/;"	kind:function	line:107
+getopt	../genome/tools/_app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+getopt	../genome/tools/app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:6
+getopt	../genome/tools/idiographica.download.py	/^import os,sys,ConfigParser,getopt$/;"	kind:namespace	line:11
+getopt	../genome/tools/idiographica.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:41
+getopt	../genome/tools/sum.by.column.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+gmail.py	../genome/tools/gmail/gmail.py	1;"	kind:file	line:1
+has_label	../genome/tools/gmail/message.py	/^    def has_label(self, label):$/;"	kind:member	line:71
+html	../genome/tools/idiographica.download.py	/^import lxml.html$/;"	kind:namespace	line:17
+html	../genome/tools/idiographica.py	/^import lxml.html$/;"	kind:namespace	line:46
+idiographica.download.py	../genome/tools/idiographica.download.py	1;"	kind:file	line:1
+idiographica.py	../genome/tools/idiographica.py	1;"	kind:file	line:1
+imaplib	../genome/tools/gmail/gmail.py	/^import imaplib$/;"	kind:namespace	line:2
+important	../genome/tools/gmail/gmail.py	/^    def important(self):$/;"	kind:member	line:182
+inbox	../genome/tools/gmail/gmail.py	/^    def inbox(self):$/;"	kind:member	line:167
+is_deleted	../genome/tools/gmail/message.py	/^    def is_deleted(self):$/;"	kind:member	line:86
+is_draft	../genome/tools/gmail/message.py	/^    def is_draft(self):$/;"	kind:member	line:68
+is_read	../genome/tools/gmail/message.py	/^    def is_read(self):$/;"	kind:member	line:42
+is_starred	../genome/tools/gmail/message.py	/^    def is_starred(self):$/;"	kind:member	line:55
+itertools	../genome/tools/sum.by.column.py	/^import operator,itertools$/;"	kind:namespace	line:7
+label	../genome/tools/gmail/gmail.py	/^    def label(self, label_name):$/;"	kind:member	line:136
+labels	../genome/tools/gmail/gmail.py	/^    def labels(self, require_unicode=False):$/;"	kind:member	line:161
+load_workbook	../genome/tools/app.py	/^from openpyxl import load_workbook$/;"	kind:namespace	line:11
+login	../genome/tools/gmail/__init__.py	/^from .utils import login, authenticate$/;"	kind:namespace	line:20
+login	../genome/tools/gmail/gmail.py	/^    def login(self, username, password):$/;"	kind:member	line:93
+login	../genome/tools/gmail/utils.py	/^def login(username, password):$/;"	kind:function	line:5
+logout	../genome/tools/gmail/gmail.py	/^    def logout(self):$/;"	kind:member	line:131
+lxml	../genome/tools/idiographica.download.py	/^import lxml.html$/;"	kind:namespace	line:17
+lxml	../genome/tools/idiographica.py	/^import lxml.html$/;"	kind:namespace	line:46
+mail	../genome/tools/gmail/mailbox.py	/^    def mail(self, prefetch=False, **kwargs):$/;"	kind:member	line:25
+mail_domain	../genome/tools/gmail/gmail.py	/^    def mail_domain(self):$/;"	kind:member	line:185
+mailbox	../genome/tools/gmail/gmail.py	/^    def mailbox(self, mailbox_name):$/;"	kind:member	line:66
+mailbox.py	../genome/tools/gmail/mailbox.py	1;"	kind:file	line:1
+main	../genome/tools/_app.py	/^def main():$/;"	kind:function	line:120
+main	../genome/tools/app.py	/^def main():$/;"	kind:function	line:1597
+main	../genome/tools/idiographica.download.py	/^def main(argv):$/;"	kind:function	line:141
+main	../genome/tools/idiographica.py	/^def main():$/;"	kind:function	line:473
+main	../genome/tools/sum.by.column.py	/^def main():$/;"	kind:function	line:198
+make_header	../genome/tools/gmail/message.py	/^from email.header import decode_header, make_header$/;"	kind:namespace	line:6
+message.py	../genome/tools/gmail/message.py	1;"	kind:file	line:1
+modified_deutf7	../genome/tools/gmail/utf.py	/^def modified_deutf7(s):$/;"	kind:function	line:96
+modified_utf7	../genome/tools/gmail/utf.py	/^def modified_utf7(s):$/;"	kind:function	line:91
+move_to	../genome/tools/gmail/message.py	/^    def move_to(self, name):$/;"	kind:member	line:104
+mysql	../genome/tools/app.py	/^import mysql.connector$/;"	kind:namespace	line:8
+operator	../genome/tools/sum.by.column.py	/^import operator,itertools$/;"	kind:namespace	line:7
+os	../genome/tools/_app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+os	../genome/tools/app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:6
+os	../genome/tools/gmail/message.py	/^import os$/;"	kind:namespace	line:5
+os	../genome/tools/idiographica.download.py	/^import os,sys,ConfigParser,getopt$/;"	kind:namespace	line:11
+os	../genome/tools/idiographica.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:41
+os	../genome/tools/sum.by.column.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+parse	../genome/tools/gmail/message.py	/^    def parse(self, raw_message):$/;"	kind:member	line:136
+parse_flags	../genome/tools/gmail/message.py	/^    def parse_flags(self, headers):$/;"	kind:member	line:120
+parse_headers	../genome/tools/gmail/message.py	/^    def parse_headers(self, message):$/;"	kind:member	line:114
+parse_labels	../genome/tools/gmail/message.py	/^    def parse_labels(self, headers):$/;"	kind:member	line:124
+parse_subject	../genome/tools/gmail/message.py	/^    def parse_subject(self, encoded_subject):$/;"	kind:member	line:131
+postObjDataFile	../genome/tools/idiographica.py	/^def postObjDataFile(dataFilePath,formSetting):$/;"	kind:function	line:180
+querySourceData	../genome/tools/app.py	/^def querySourceData(genome,dbProfile,dbConn):$/;"	kind:function	line:1484
+re	../genome/tools/gmail/gmail.py	/^import re$/;"	kind:namespace	line:1
+re	../genome/tools/gmail/message.py	/^import re$/;"	kind:namespace	line:3
+re	../genome/tools/idiographica.download.py	/^import re$/;"	kind:namespace	line:18
+re	../genome/tools/idiographica.py	/^import re$/;"	kind:namespace	line:47
+read	../genome/tools/gmail/message.py	/^    def read(self):$/;"	kind:member	line:45
+readSetting	../genome/tools/idiographica.download.py	/^def readSetting(option,section,filePath):$/;"	kind:function	line:59
+readSetting	../genome/tools/idiographica.py	/^def readSetting(option,section,filePath):$/;"	kind:function	line:80
+readSettings	../genome/tools/app.py	/^def readSettings(settingsVar):$/;"	kind:function	line:244
+readyBedFileData	../genome/tools/app.py	/^def readyBedFileData(bedFilePath):$/;"	kind:function	line:1008
+readyProfileSourceData	../genome/tools/app.py	/^def readyProfileSourceData(genome,settings):$/;"	kind:function	line:1353
+remove_label	../genome/tools/gmail/message.py	/^    def remove_label(self, label):$/;"	kind:member	line:80
+renameObjDataFile	../genome/tools/idiographica.py	/^def renameObjDataFile(dataFilePath):$/;"	kind:function	line:262
+requests	../genome/tools/idiographica.download.py	/^import requests$/;"	kind:namespace	line:16
+requests	../genome/tools/idiographica.py	/^import requests$/;"	kind:namespace	line:44
+save	../genome/tools/gmail/message.py	/^    def save(self, path=None):$/;"	kind:member	line:225
+saveDataToCSV	../genome/tools/_app.py	/^def saveDataToCSV(title,data,filePath,fmt=''):$/;"	kind:function	line:23
+saveDataToCSV	../genome/tools/app.py	/^def saveDataToCSV(title,data,filePath,fmt=''):$/;"	kind:function	line:159
+saveDataToCSV	../genome/tools/idiographica.py	/^def saveDataToCSV(title,data,filePath,fmt=''):$/;"	kind:function	line:126
+saveDataToCSV	../genome/tools/sum.by.column.py	/^def saveDataToCSV(title,data,filePath,fmt=''):$/;"	kind:function	line:42
+sent_mail	../genome/tools/gmail/gmail.py	/^    def sent_mail(self):$/;"	kind:member	line:179
+setProfileSourceDataPath	../genome/tools/app.py	/^def setProfileSourceDataPath(genome,profile):$/;"	kind:function	line:213
+setStatsResultPath	../genome/tools/app.py	/^def setStatsResultPath(genome,profile,intersectClusterName,repeatClusterName):$/;"	kind:function	line:224
+setSumResultPath	../genome/tools/_app.py	/^def setSumResultPath(groupColumn,followColumn):$/;"	kind:function	line:76
+setSumResultPath	../genome/tools/sum.by.column.py	/^def setSumResultPath(groupColumn,followColumn):$/;"	kind:function	line:95
+shutil	../genome/tools/app.py	/^import csv,shutil$/;"	kind:namespace	line:13
+shutil	../genome/tools/idiographica.download.py	/^import shutil$/;"	kind:namespace	line:14
+shutil	../genome/tools/idiographica.py	/^import csv,shutil$/;"	kind:namespace	line:42
+sleep	../genome/tools/idiographica.py	/^from time import sleep$/;"	kind:namespace	line:48
+spam	../genome/tools/gmail/gmail.py	/^    def spam(self):$/;"	kind:member	line:170
+star	../genome/tools/gmail/message.py	/^    def star(self):$/;"	kind:member	line:58
+starred	../genome/tools/gmail/gmail.py	/^    def starred(self):$/;"	kind:member	line:173
+statsResultFile	../genome/tools/app.py	/^def statsResultFile(genome,settings,resultFilePath,intersectClusterName,repeatClusterName):$/;"	kind:function	line:309
+sum.by.column.py	../genome/tools/sum.by.column.py	1;"	kind:file	line:1
+sumByGroup	../genome/tools/_app.py	/^def sumByGroup(sumParams):$/;"	kind:function	line:91
+sumByGroup	../genome/tools/sum.by.column.py	/^def sumByGroup(sumParams):$/;"	kind:function	line:109
+sys	../genome/tools/_app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+sys	../genome/tools/app.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:6
+sys	../genome/tools/idiographica.download.py	/^import os,sys,ConfigParser,getopt$/;"	kind:namespace	line:11
+sys	../genome/tools/idiographica.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:41
+sys	../genome/tools/sum.by.column.py	/^import os,sys,configparser,getopt$/;"	kind:namespace	line:5
+text_type	../genome/tools/gmail/utf.py	/^text_type = unicode$/;"	kind:variable	line:25
+threads	../genome/tools/gmail/mailbox.py	/^    def threads(self, prefetch=False, **kwargs):$/;"	kind:member	line:79
+time	../genome/tools/gmail/message.py	/^import time$/;"	kind:namespace	line:4
+time	../genome/tools/idiographica.download.py	/^from datetime import datetime, date, time$/;"	kind:namespace	line:19
+time	../genome/tools/idiographica.py	/^from datetime import datetime, date, time$/;"	kind:namespace	line:49
+unread	../genome/tools/gmail/message.py	/^    def unread(self):$/;"	kind:member	line:50
+unstar	../genome/tools/gmail/message.py	/^    def unstar(self):$/;"	kind:member	line:63
+usage	../genome/tools/_app.py	/^def usage():$/;"	kind:function	line:20
+usage	../genome/tools/app.py	/^def usage():$/;"	kind:function	line:82
+usage	../genome/tools/idiographica.download.py	/^def usage():$/;"	kind:function	line:34
+usage	../genome/tools/idiographica.py	/^def usage():$/;"	kind:function	line:61
+usage	../genome/tools/sum.by.column.py	/^def usage():$/;"	kind:function	line:35
+use_mailbox	../genome/tools/gmail/gmail.py	/^    def use_mailbox(self, mailbox):$/;"	kind:member	line:61
+utf.py	../genome/tools/gmail/utf.py	1;"	kind:file	line:1
+utils.py	../genome/tools/gmail/utils.py	1;"	kind:file	line:1
+wget	../genome/tools/idiographica.download.py	/^import wget$/;"	kind:namespace	line:23
